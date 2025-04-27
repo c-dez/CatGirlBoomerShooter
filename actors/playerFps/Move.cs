@@ -23,6 +23,8 @@ namespace Dreams.Actors.Players
         [Export] float jumpHeight; //8.0
         [Export] float jumpTimeToPeak; //0.6
         [Export] float jumpTimeToDecend; //0.4
+        [Export] private float wallJumpForce = 4.0f;
+
         float coyoteTimeMax = 0.3f;
         float jumpBufferMax = 0.5f;
         float coyoteTimeCounter = 0f;
@@ -49,7 +51,6 @@ namespace Dreams.Actors.Players
 
         // wall jump
         private bool canWallJump = false;
-        private float wallJumpForce = 5.5f;
 
 
 

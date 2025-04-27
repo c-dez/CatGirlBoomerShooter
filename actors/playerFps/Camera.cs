@@ -2,9 +2,11 @@ using Godot;
 
 public partial class Camera : Camera3D
 {
-    [Export] private float mouseSensitivity = 0.3f / 3;
-    private Vector2 cameraInputDirection = Vector2.Zero;
     [Export] private UserInputs userInputs;
+    [Export] private float mouseSensitivity = 0.3f / 3;
+    [Export] private float clampUp = 50f;
+    [Export] private float clampDown = -80f;
+    private Vector2 cameraInputDirection = Vector2.Zero;
 
 
     public override void _Ready()
@@ -32,7 +34,7 @@ public partial class Camera : Camera3D
         Vector3 rot = Rotation;
         rot.X -= cameraInputDirection.Y * delta;
         rot.Y -= cameraInputDirection.X * delta;
-        rot.X = Mathf.Clamp(rot.X, Mathf.DegToRad(-45), Mathf.DegToRad(30));
+        rot.X = Mathf.Clamp(rot.X, Mathf.DegToRad(clampDown), Mathf.DegToRad(clampUp));
         Rotation = rot;
         cameraInputDirection = Vector2.Zero;
     }
