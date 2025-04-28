@@ -1,7 +1,7 @@
 using Godot;
 
 using static Godot.GD;
-namespace Dreams.Actors.Players
+namespace Actors.Players
 {
 
     public partial class Move : Node
@@ -10,7 +10,7 @@ namespace Dreams.Actors.Players
         [Export] public CharacterBody3D player;
         // [Export] public Node3D skin;
         [Export] private Area3D wallArea;
-        [Export]private UserInputs userInputs;
+        [Export] private UserInputs userInputs;
 
         // [ExportGroup("Movement")]
         // private AnimationNodeStateMachinePlayback moveStateMachine;
@@ -148,6 +148,10 @@ namespace Dreams.Actors.Players
                 }
             }
             player.Velocity = velocity;
+            Vector3 rot = player.Rotation;
+            rot.X = 0f;
+            player.Rotation = rot;
+
             player.MoveAndSlide();
         }
 
