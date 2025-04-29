@@ -1,5 +1,5 @@
 using Godot;
-
+// using Players;
 using static Godot.GD;
 namespace Actors.Players
 {
@@ -7,12 +7,12 @@ namespace Actors.Players
     public partial class Move : Node
     {
         [ExportGroup("Nodes")]
-        [Export] public CharacterBody3D player;
+        [Export] private CharacterBody3D player;
         // [Export] public Node3D skin;
         [Export] private Area3D wallArea;
         [Export] private UserInputs userInputs;
 
-        // [ExportGroup("Movement")]
+        [ExportGroup("Movement")]
         // private AnimationNodeStateMachinePlayback moveStateMachine;
         private float speedModifier = 1.0f;
         private Vector3 lastMovementDirection = Vector3.Back;
@@ -20,9 +20,9 @@ namespace Actors.Players
         [Export] public float speed = 8.0f;
 
         //jump
-        [Export] float jumpHeight; //8.0
-        [Export] float jumpTimeToPeak; //0.6
-        [Export] float jumpTimeToDecend; //0.4
+        [Export] float jumpHeight; //1
+        [Export] float jumpTimeToPeak; //0.4
+        [Export] float jumpTimeToDecend; //0.5
         [Export] private float wallJumpForce = 4.0f;
 
         float coyoteTimeMax = 0.3f;
@@ -44,7 +44,7 @@ namespace Actors.Players
             set
             {
                 _squashAndStretch = value;
-                float negative = 1.0f + (1.0f - _squashAndStretch);
+                // float negative = 1.0f + (1.0f - _squashAndStretch);
                 // skin.Scale = new Vector3(negative, _squashAndStretch, negative);
             }
         }
@@ -52,24 +52,16 @@ namespace Actors.Players
         // wall jump
         private bool canWallJump = false;
 
-        // test
-        private bool space = false;
-        private float maxspaceBuffer = 0.2f;
-        private float spaceBuffer = 0.0f;
-
 
         public override void _Ready()
         {
-            // moveStateMachine = (AnimationNodeStateMachinePlayback)GetNode<AnimationTree>("../AnimationTree").Get("parameters/MoveStateMachine/playback");
+            // calcula etapas de jump
             jumpVelocity = (2.0f * jumpHeight) / jumpTimeToPeak;
             jumpGravity = (-2.0f * jumpHeight) / (jumpTimeToPeak * jumpTimeToPeak);
             fallGravity = (-2.0f * jumpHeight) / (jumpTimeToDecend * jumpTimeToDecend);
-
             //wall jump signals
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
-
-            // userInputs = GetNode<UserInputs>("../UserInputs");
 
 
         }
@@ -80,7 +72,6 @@ namespace Actors.Players
             MoveOnFloor(userInputs.moveDirection, velocity);
             LastMoveDirection(userInputs.moveDirection);
             Jump(velocity, (float)delta);
-            // CameraRotation(userInputs.moveDirection, (float)delta);
             WallJump();
 
             
@@ -96,7 +87,6 @@ namespace Actors.Players
                 {
                     if (userInputs.jumpPressed)
                     {
-                        DoSquashAndStretch(1.2f, 0.2f);
                         velocity.Y = wallJumpForce;
                         canWallJump = false;
                     }
@@ -156,7 +146,6 @@ namespace Actors.Players
             Vector3 rot = player.Rotation;
             rot.X = 0f;
             player.Rotation = rot;
-
             player.MoveAndSlide();
         }
 
@@ -177,8 +166,6 @@ namespace Actors.Players
                 velocity.Y = jumpVelocity;
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
-
-                DoSquashAndStretch(1.2f, 0.2f);
             }
             //on air
             if (!player.IsOnFloor())
@@ -193,12 +180,8 @@ namespace Actors.Players
                     velocity.Y += jumpGravity * _delta;
                 }
             }
-
-            //coyote time
+            // coyote time
             coyoteTimeCounter = player.IsOnFloor() ? coyoteTimeMax : coyoteTimeCounter - _delta;
-            //jump buffer
-            // jumpBufferCounter = Input.IsActionJustPressed("space") ? jumpBufferMax : - _delta;
-
             player.Velocity = velocity;
             player.MoveAndSlide();
         }
