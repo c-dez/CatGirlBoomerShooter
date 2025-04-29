@@ -52,7 +52,10 @@ namespace Actors.Players
         // wall jump
         private bool canWallJump = false;
 
-
+        // test
+        private bool space = false;
+        private float maxspaceBuffer = 0.2f;
+        private float spaceBuffer = 0.0f;
 
 
         public override void _Ready()
@@ -79,6 +82,8 @@ namespace Actors.Players
             Jump(velocity, (float)delta);
             // CameraRotation(userInputs.moveDirection, (float)delta);
             WallJump();
+
+            
         }
 
 
@@ -89,7 +94,7 @@ namespace Actors.Players
             {
                 if (!player.IsOnFloor())
                 {
-                    if (Input.IsActionJustPressed("space"))
+                    if (userInputs.jumpPressed)
                     {
                         DoSquashAndStretch(1.2f, 0.2f);
                         velocity.Y = wallJumpForce;
@@ -167,7 +172,7 @@ namespace Actors.Players
 
         private void Jump(Vector3 velocity, float _delta)
         {
-            if (Input.IsActionJustPressed("space") && coyoteTimeCounter > 0f)
+            if (userInputs.jumpPressed && (coyoteTimeCounter > 0.01f ))
             {
                 velocity.Y = jumpVelocity;
                 jumpBufferCounter = 0f;

@@ -8,7 +8,7 @@ namespace Enemies
         public CharacterBody3D player;
 
         [ExportGroup("Base Stats")]
-        [Export] private int Health = 100;
+        [Export] public int Health = 100;
         [Export] private float speed = 5.0f;
         [Export] private int attackDamage = 5;
 
@@ -37,26 +37,43 @@ namespace Enemies
 
         public override void _PhysicsProcess(double delta)
         {
-            // MoveToPlayer((float)delta);
             Gravity();
+            // MoveToPlayer((float)delta);
             NavigateToPlayer((float)delta);
+            OnDead();
         }
+
 
         private void NavigateToPlayer(float delta)
         {
             if (IsPlayerInNoticeRadius())
             {
-
+                // 
                 Vector3 direction;
                 Vector3 velocity;
                 nav.TargetPosition = player.GlobalPosition;
                 direction = (nav.GetNextPathPosition() - GlobalPosition).Normalized();
-                // direction = direction.Normalized();
                 velocity = new Vector3(direction.X, 0, direction.Z) * speed;
                 Velocity = velocity;
+                if (Position.DistanceTo(player.Position) < attackRadius)
+                {
+                    Velocity = Vector3.Zero;
+                }
+                // look at target
+                Vector3 targetDirection = (player.Position - Position).Normalized();
+                Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
+                float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
+                Vector3 rotation = Rotation;
+                rotation.Y = Mathf.RotateToward(Rotation.Y, targetAngle, delta * 6.0f);
+                Rotation = rotation;
+            }
+            else
+            {
+                Velocity = Vector3.Zero;
             }
             MoveAndSlide();
         }
+
 
         public virtual void MoveToPlayer(float delta)
         {
@@ -99,7 +116,6 @@ namespace Enemies
         }
 
 
-
         private void Gravity()
         {
             if (!IsOnFloor())
@@ -111,18 +127,22 @@ namespace Enemies
             }
         }
 
+
         public void OnDead()
         {
             if (Health <= 0)
             {
                 GD.Print($"{Name} is dead");
+                QueueFree();
             }
         }
+
 
         public virtual void RangeAttack()
         {
             GD.Print("range attack");
         }
+
 
         public virtual void AttackMelee()
         {
@@ -134,8 +154,5 @@ namespace Enemies
         {
             return Position.DistanceTo(player.Position) < noticeRadius;
         }
-
-
-
     }
 }
