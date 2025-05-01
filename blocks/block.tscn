@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4ypjed6vviwh"]
+
+[ext_resource type="Script" uid="uid://ubu4dci078f3" path="res://blocks/Block.cs" id="1_wp24v"]
+[ext_resource type="Texture2D" uid="uid://o45t2wel260h" path="res://prefabs/grid/Green/texture_02.png" id="1_xoxf0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xoxf0"]
+albedo_texture = ExtResource("1_xoxf0")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i8jwd"]
+
+[node name="Block" type="CSGBox3D"]
+material = SubResource("StandardMaterial3D_xoxf0")
+script = ExtResource("1_wp24v")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_i8jwd")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://di3i83c1pj8jm"]
+
+[ext_resource type="Script" uid="uid://ckw385qysc2tn" path="res://actors/enemies/baseEnemy/BaseEnemy.cs" id="1_ycvn3"]
+[ext_resource type="Texture2D" uid="uid://djjdx7trlxwg6" path="res://cute__catgirl__military__revolver_S3097673113_St25_G7.5.jpeg" id="3_in30a"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aw7eb"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_24atw"]
+
+[node name="BaseEnemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 15
+floor_max_angle = 1.0472
+script = ExtResource("1_ycvn3")
+noticeRadius = 15.0
+attackRadius = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_aw7eb")
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Components"]
+
+[node name="Skin" type="Node3D" parent="Components"]
+
+[node name="Sprite3D" type="Sprite3D" parent="Components/Skin"]
+transform = Transform3D(0.14, 0, 0, 0, 0.14, 0, 0, 0, 0.14, 0, 0, 0.648933)
+texture = ExtResource("3_in30a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Components/Skin"]
+mesh = SubResource("CapsuleMesh_24atw")

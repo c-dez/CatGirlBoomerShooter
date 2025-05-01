@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Enemies
+namespace Actors.Enemies
 {
     public partial class BaseEnemy : CharacterBody3D
     {

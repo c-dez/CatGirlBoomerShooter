@@ -1,5 +1,4 @@
 using Godot;
-// using Actors.Players.UserInputs;
 namespace Actors.Players
 {
     public partial class UserInputs : Node
@@ -9,6 +8,7 @@ namespace Actors.Players
         public Vector3 moveDirection = Vector3.Zero;
         public bool jumpPressed = false;
 
+
         public override void _Ready()
         {
             jumpTimer = GetNode<Timer>("JumpTimer");
@@ -17,9 +17,9 @@ namespace Actors.Players
         {
             GetMoveDirection();
             JumpBuffer();
-
-
         }
+
+        
         private void GetMoveDirection()
         {
             Vector2 rawInput = Input.GetVector("left", "right", "forward", "backwards");
@@ -28,8 +28,6 @@ namespace Actors.Players
             Vector3 right = camera.GlobalBasis.X;
             right.Y = 0;
             moveDirection = (forward * rawInput.Y + right * rawInput.X).Normalized();
-            // moveDirection = (forward * rawInput.Y + right * rawInput.X);
-            // GD.Print(moveDirection);
         }
 
         private void JumpBuffer()
@@ -40,7 +38,7 @@ namespace Actors.Players
             }
             jumpPressed = jumpTimer.TimeLeft > 0 ;
         }
-
-      
+        
     }
+    
 }
