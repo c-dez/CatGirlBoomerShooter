@@ -1,40 +1,26 @@
 using Actors.Enemies;
 using Godot;
-using System.Threading;
 
 public partial class NavigationAgent3d : NavigationAgent3D
 {
     private BaseEnemy body;
-    private Patrol patrol;
-    // private Godot.Timer waitTimer;
-
 
     public override void _Ready()
     {
         body = GetParent<Node>().GetParent<BaseEnemy>();
-        patrol = GetParent<Node3D>().GetNode<Patrol>("BehaviorStateMachine/Patrol");
-        Debugg();
-
-
-
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-
 
     }
 
 
-
-    public virtual void PatrolTo(float delta)
+    public virtual void NavigateTo(float delta, Vector3 targetPosition, float moveSpeed)
     {
-        TargetPosition = patrol.point1.GlobalPosition;
+        TargetPosition = targetPosition;
+
         Vector3 direction;
         Vector3 velocity;
 
         direction = (GetNextPathPosition() - body.GlobalPosition).Normalized();
-        velocity = new Vector3(direction.X, 0, direction.Z) * body.walkSpeed;
+        velocity = new Vector3(direction.X, 0, direction.Z) * moveSpeed;
         body.Velocity = velocity;
 
         //look at direction
@@ -45,35 +31,12 @@ public partial class NavigationAgent3d : NavigationAgent3D
         rotation.Y = Mathf.RotateToward(body.Rotation.Y, targetAngle, delta * 6f);
         body.Rotation = rotation;
 
-        if (body.Position.DistanceTo(patrol.point1.Position) < body.attackRadius)
-        {
-            body.Velocity = Vector3.Zero;
 
-            // wait
-            //necesito que solo detecte cuando entra, un area funciona
-            if (!patrol.waitTimer.IsStopped())
-            {
-                return;
-            }
-            patrol.waitTimer.Start();
-            GD.Print(patrol.waitTimer.TimeLeft);
-
-        }
         body.MoveAndSlide();
-
-
     }
 
 
-    private void Debugg()
-    {
 
-        if (patrol.point1 == null || patrol.point2 == null)
-        {
-            GD.PrintErr($"{body.Name} patrol/points are null {patrol.GetPath()}");
-
-        }
-    }
 
 
 

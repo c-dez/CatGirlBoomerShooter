@@ -1,17 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://di3i83c1pj8jm"]
+[gd_scene load_steps=9 format=3 uid="uid://di3i83c1pj8jm"]
 
 [ext_resource type="Script" uid="uid://ckw385qysc2tn" path="res://actors/enemies/baseEnemy/BaseEnemy.cs" id="1_ycvn3"]
 [ext_resource type="Script" uid="uid://5vd2vhhv5xll" path="res://actors/enemies/baseEnemy/behaviorStateMachine/NavigationAgent3d.cs" id="2_eiuyy"]
+[ext_resource type="Script" uid="uid://dha75c28lwunk" path="res://actors/enemies/baseEnemy/BehaviorStateMachine.cs" id="3_all22"]
 [ext_resource type="Texture2D" uid="uid://djjdx7trlxwg6" path="res://cute__catgirl__military__revolver_S3097673113_St25_G7.5.jpeg" id="3_in30a"]
 [ext_resource type="Script" uid="uid://b14k7xq4v84nt" path="res://actors/enemies/baseEnemy/behaviorStateMachine/Patrol.cs" id="3_mor54"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aw7eb"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_eiuyy"]
+radius = 1.0
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_24atw"]
 
 [node name="BaseEnemy" type="CharacterBody3D"]
 collision_layer = 4
-collision_mask = 15
+collision_mask = 31
 slide_on_ceiling = false
 floor_max_angle = 1.0472
 script = ExtResource("1_ycvn3")
@@ -23,11 +27,19 @@ shape = SubResource("CapsuleShape3D_aw7eb")
 
 [node name="Components" type="Node3D" parent="."]
 
+[node name="AreaDetectPatrolPoints" type="Area3D" parent="Components"]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/AreaDetectPatrolPoints"]
+shape = SubResource("SphereShape3D_eiuyy")
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Components"]
 debug_enabled = true
 script = ExtResource("2_eiuyy")
 
 [node name="BehaviorStateMachine" type="Node" parent="Components"]
+script = ExtResource("3_all22")
 
 [node name="Idle" type="Node" parent="Components/BehaviorStateMachine"]
 

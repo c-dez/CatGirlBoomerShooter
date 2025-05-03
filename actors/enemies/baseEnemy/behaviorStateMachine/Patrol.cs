@@ -1,24 +1,41 @@
+using System.Collections.Generic;
 using Godot;
-using System;
 
 public partial class Patrol : Node
 {
-    [Export] public Node3D point1;
-    [Export] public Node3D point2;
     public Timer waitTimer;
+
+
+    [Export] NodePath[] patrolPointsPaths;
+    public List<PatrolPoint1> patrolPointsNodes = new();
 
     public override void _Ready()
     {
         waitTimer = GetNode<Timer>("waitTimer");
-        // waitTimer.Timeout += OnWaitTimeout;
         waitTimer.Timeout += OnWaitTimeout;
+
+        foreach (var path in patrolPointsPaths)
+        {
+            //patrolPointPaths obtiene el path de cada elemento, y ese path lo agrego a var node, y ese node lo anado a lista patrolPointNodes
+            PatrolPoint1 node = GetNode<PatrolPoint1>(path);
+            if (node != null)
+            {
+                patrolPointsNodes.Add(node);
+            }
+        }
+    }
+
+
+    public override void _PhysicsProcess(double delta)
+    {
 
     }
 
     private void OnWaitTimeout()
     {
-        // GD.Print("time");
+
     }
 
-   
+
+
 }

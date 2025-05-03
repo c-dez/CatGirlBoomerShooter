@@ -7,7 +7,7 @@ namespace Actors.Enemies
 
     public partial class BehaviorStateMachine : Node
     {
-        public enum ENEMY_STATE
+        public enum Behavior_State
         {
             idle,
             patroling,
@@ -15,17 +15,34 @@ namespace Actors.Enemies
             chase
 
         }
+
+        public int state;
         // [ExportGroup("Behavior Nodes")]
         // [Export] private Node idle;
         // [Export] private Node investigate;
         // [Export] private Node chase;
-        public Patrol patrol;
 
-        public override void _Ready()
+
+        public override void _PhysicsProcess(double delta)
         {
-            patrol = GetNode<Patrol>("Patrol");
+            // GD.Print(state);
+            // if (Input.IsActionJustPressed("e_key"))
+            // {
+            //     if (state == 1)
+            //     {
+            //         state = 0;
+            //     }
+            //     else{
+            //         state = 1;
+            //     }
+            // }
+
+            if (Input.IsActionJustPressed("q_key"))
+            {
+                state = 0;
+            }
         }
 
     }
-    
+
 }

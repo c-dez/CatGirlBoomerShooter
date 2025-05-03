@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Godot;
 
 namespace Actors.Enemies
@@ -10,7 +11,7 @@ namespace Actors.Enemies
         [ExportGroup("Base Stats")]
         [Export] public int Health = 100;
         [Export] private float speed = 5.0f;
-        [Export]public float walkSpeed = 2.0f;
+        [Export] public float walkSpeed = 2.0f;
         [Export] private int attackDamage = 5;
 
         [ExportGroup("Detection Radius")]
@@ -18,109 +19,74 @@ namespace Actors.Enemies
         [Export] public float attackRadius = 3;
 
         [ExportGroup("Nodes")]
-        // [Export] private Node3D skin;
         private Node3D skin;
-        // [Export] private AnimationTree animationTree;
 
-        //animation
-        // private AnimationNodeStateMachinePlayback moveStateMachine;
-
+        //navigation
         private NavigationAgent3d nav;
+        private BehaviorStateMachine behaviorStateMachine;
+        private Patrol patrol;
+        private Area3D areaDetectPatrolPoints;
 
-        private BehaviorStateMachine behaviorStateMachide;
+        private int patrolPointsNodesIndex = 0;
+        // private BehaviorStateMachine behaviorStateMachide;
 
         public override void _Ready()
         {
             player = (CharacterBody3D)GetTree().GetFirstNodeInGroup("Player");
-            // moveStateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/MoveStateMachine/playback");
             skin = GetNode<Node3D>("Components/Skin");
             nav = GetNode<NavigationAgent3d>("Components/NavigationAgent3D");
-            // behaviorStateMachide = GetNode<BehaviorStateMachine>("Components/BehaviorStateMachine");
+            behaviorStateMachine = GetNode<BehaviorStateMachine>("Components/BehaviorStateMachine");
+            patrol = GetNode<Patrol>("Components/BehaviorStateMachine/Patrol");
+            areaDetectPatrolPoints = GetNode<Area3D>("Components/AreaDetectPatrolPoints");
+            //signal
+            areaDetectPatrolPoints.AreaEntered += OnAreaEntered;
+            behaviorStateMachine.state = (int)BehaviorStateMachine.Behavior_State.patroling;
+
+
+
+            Debugg();
+
         }
 
 
         public override void _PhysicsProcess(double delta)
         {
+
             Gravity();
-            // MoveToPlayer((float)delta);
-            // NavigateToTarget((float)delta);
             OnDead();
 
-            nav.PatrolTo((float)delta);
-        }
-
-
-        private void NavigateToTarget(float delta)
-        {
-            if (IsPlayerInNoticeRadius())
+            switch (behaviorStateMachine.state)
             {
-                // 
-                Vector3 direction;
-                Vector3 velocity;
-                nav.TargetPosition = behaviorStateMachide.patrol.point2.GlobalPosition;
-                // nav.TargetPosition = player.GlobalPosition;
-                direction = (nav.GetNextPathPosition() - GlobalPosition).Normalized();
-                velocity = new Vector3(direction.X, 0, direction.Z) * speed;
-                Velocity = velocity;
-                if (Position.DistanceTo(player.Position) < attackRadius)
+                case (int)BehaviorStateMachine.Behavior_State.idle:
+                    // nav.NavigateTo((float)delta, patrol.point1.GlobalPosition, 0f);
+                    break;
+                case (int)BehaviorStateMachine.Behavior_State.patroling:
+                    nav.NavigateTo((float)delta, patrol.patrolPointsNodes[patrolPointsNodesIndex].GlobalPosition, speed);
+                    break;
+
+                default:
+                    GD.PrintErr($"No State: {Name} switch");
+                    break;
+            }
+            if (Input.IsActionJustPressed("e_key"))
+            {
+                if (behaviorStateMachine.state == 1)
                 {
-                    Velocity = Vector3.Zero;
+                    behaviorStateMachine.state = 0;
                 }
-                // look at target
-                Vector3 targetDirection = (player.Position - Position).Normalized();
-                Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
-                float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
-                Vector3 rotation = Rotation;
-                rotation.Y = Mathf.RotateToward(Rotation.Y, targetAngle, delta * 6.0f);
-                Rotation = rotation;
+                else
+                {
+                    behaviorStateMachine.state = 1;
+                }
             }
-            else
-            {
-                Velocity = Vector3.Zero;
-            }
-            MoveAndSlide();
         }
 
-
-        // public virtual void MoveToPlayer(float delta)
-        // {
-        //     // en este caso si puedo modificar Velocity, dejo comentarios de la forma "vieja" como recordatorio
-        //     // Vector3 velocity = Velocity;
-        //     if (IsPlayerInNoticeRadius())
-        //     {
-        //         Vector3 targetDirection = (player.Position - Position).Normalized();
-        //         Vector2 TargetVector = new(targetDirection.X, targetDirection.Z);
-        //         float targetAngle = -TargetVector.Angle() + Mathf.Pi / 2;
-        //         Vector3 rotation = Rotation;
-        //         rotation.Y = Mathf.RotateToward(Rotation.Y, targetAngle, delta * 6.0f);
-        //         Rotation = rotation;
-
-        //         if (Position.DistanceTo(player.Position) > attackRadius)
-        //         {
-        //             // velocity = new Vector3(TargetVector.X, 0, TargetVector.Y) * speed;
-        //             Velocity = new Vector3(TargetVector.X, 0, TargetVector.Y) * speed;
-
-        //             //animation
-        //             // moveStateMachine.Travel("walk");
-        //         }
-        //         else
-        //         {
-        //             // velocity = Vector3.Zero;
-        //             Velocity = Vector3.Zero;
-        //             //animation
-        //             // moveStateMachine.Travel("idle");
-
-        //         }
-        //         // Velocity = velocity;
-        //         MoveAndSlide();
-        //     }
-        //     else
-        //     {
-        //         //animation
-        //         // moveStateMachine.Travel("idle");
-
-        //     }
-        // }
+        public void OnAreaEntered(Node3D body)
+        {
+            patrolPointsNodesIndex += 1;
+            if (patrolPointsNodesIndex == patrol.patrolPointsNodes.Count)
+            patrolPointsNodesIndex = 0;
+        }
 
 
         private void Gravity()
@@ -161,5 +127,17 @@ namespace Actors.Enemies
         {
             return Position.DistanceTo(player.Position) < noticeRadius;
         }
+
+
+        private void Debugg()
+        {
+
+            if (patrol.patrolPointsNodes == null)
+            {
+                GD.PrintErr($"{Name} patrol/points are null {patrol.GetPath()}");
+
+            }
+        }
+
     }
 }

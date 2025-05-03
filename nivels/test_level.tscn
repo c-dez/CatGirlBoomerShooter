@@ -32,13 +32,13 @@ environment = SubResource("Environment_5je5d")
 [node name="Actors" type="Node" parent="."]
 
 [node name="Player" parent="Actors" instance=ExtResource("1_mso0s")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1.0921, -0.485931, -26.2362)
+transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 1.0921, -0.485931, -26.2362)
 
 [node name="BaseEnemy" parent="Actors" instance=ExtResource("2_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.525, -41)
 
-[node name="Patrol" parent="Actors/BaseEnemy/Components/BehaviorStateMachine" index="1" node_paths=PackedStringArray("point2")]
-point2 = NodePath("../../../../../Level/PatrolPoint2")
+[node name="Patrol" parent="Actors/BaseEnemy/Components/BehaviorStateMachine" index="1"]
+patrolPointsPaths = Array[NodePath]([NodePath("../../../../../Level/PatrolPoint1"), NodePath("../../../../../Level/PatrolPoint2"), NodePath("../../../../../Level/PatrolPoint3")])
 
 [node name="Level" type="Node3D" parent="."]
 
@@ -47,10 +47,13 @@ cell_size = Vector3(1, 1, 1)
 
 [node name="TenchuLevel1" parent="Level/GridMap" instance=ExtResource("3_5je5d")]
 
-[node name="PatrolPoint1" parent="Level" instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -34)
-
 [node name="PatrolPoint2" parent="Level" instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.0250001, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.0250001, -12)
+
+[node name="PatrolPoint3" parent="Level" instance=ExtResource("4_q7m5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0.0250001, -26)
+
+[node name="PatrolPoint1" parent="Level" instance=ExtResource("4_q7m5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, -25)
 
 [editable path="Actors/BaseEnemy"]
