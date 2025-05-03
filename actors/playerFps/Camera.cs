@@ -1,7 +1,7 @@
 using Godot;
 namespace Actors.Players
 {
-    public partial class Camera : Camera3D
+    public partial class Camera : Node3D
     {
         [Export] private UserInputs userInputs;
         [Export] private float mouseSensitivity = 0.3f / 3;

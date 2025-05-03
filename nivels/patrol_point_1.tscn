@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://g28mfe0kwbhc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5je5d"]
+albedo_color = Color(1, 0.396078, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_q7m5b"]
+material = SubResource("StandardMaterial3D_5je5d")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_um0vj"]
+
+[node name="PatrolPoint1" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_q7m5b")
+
+[node name="Area3D" type="Area3D" parent="."]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_um0vj")

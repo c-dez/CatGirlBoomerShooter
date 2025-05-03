@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://01qibbvkgdqi"]
+
+[ext_resource type="Script" uid="uid://c2lg14nepdygx" path="res://actors/playerFps/Camera.cs" id="1_r5hxm"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3hfph"]
+
+[node name="ThirdPersonCamera" type="Node3D"]
+script = ExtResource("1_r5hxm")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+shape = SubResource("SphereShape3D_3hfph")
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]

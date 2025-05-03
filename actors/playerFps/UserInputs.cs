@@ -3,7 +3,7 @@ namespace Actors.Players
 {
     public partial class UserInputs : Node
     {
-        [Export] private Camera3D camera;
+        [Export] private Node3D camera;
         private Timer jumpTimer;
         public Vector3 moveDirection = Vector3.Zero;
         public bool jumpPressed = false;

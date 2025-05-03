@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvcqsplxgscwe"]
+
+[ext_resource type="Script" uid="uid://c2lg14nepdygx" path="res://actors/playerFps/Camera.cs" id="1_m4jb5"]
+[ext_resource type="Script" uid="uid://dl1plyvy0wp1n" path="res://actors/playerFps/RayCast3d.cs" id="2_ynsyl"]
+
+[node name="FPSCamera" type="Camera3D"]
+script = ExtResource("1_m4jb5")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00703692, 0.0104692, -0.00228643)
+target_position = Vector3(0, 0, -50)
+collision_mask = 4
+script = ExtResource("2_ynsyl")
