@@ -15,9 +15,10 @@ public partial class Patrol : Node
 
     }
 
-     private void OnWaitTimeout()
+    private void OnWaitTimeout()
     {
-        GD.Print("time");
+        // GD.Print("time");
     }
 
+   
 }

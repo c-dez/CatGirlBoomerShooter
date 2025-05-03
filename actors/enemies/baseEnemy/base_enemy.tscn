@@ -23,10 +23,9 @@ shape = SubResource("CapsuleShape3D_aw7eb")
 
 [node name="Components" type="Node3D" parent="."]
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Components" node_paths=PackedStringArray("patrol")]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Components"]
 debug_enabled = true
 script = ExtResource("2_eiuyy")
-patrol = NodePath("../BehaviorStateMachine/Patrol")
 
 [node name="BehaviorStateMachine" type="Node" parent="Components"]
 

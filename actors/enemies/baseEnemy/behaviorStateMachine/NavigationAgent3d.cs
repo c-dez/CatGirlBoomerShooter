@@ -13,10 +13,10 @@ public partial class NavigationAgent3d : NavigationAgent3D
     {
         body = GetParent<Node>().GetParent<BaseEnemy>();
         patrol = GetParent<Node3D>().GetNode<Patrol>("BehaviorStateMachine/Patrol");
-        // GD.Print(patrol.Name);
-        // Godot.Timer waitTimer = GetNode<Godot.Timer>("WaitTimer");
+        Debugg();
 
-        // patrol.waitTimer.Timeout += OnWaitTimeout;
+
+
     }
 
     public override void _PhysicsProcess(double delta)
@@ -24,6 +24,8 @@ public partial class NavigationAgent3d : NavigationAgent3D
 
 
     }
+
+
 
     public virtual void PatrolTo(float delta)
     {
@@ -62,7 +64,17 @@ public partial class NavigationAgent3d : NavigationAgent3D
 
     }
 
-   
+
+    private void Debugg()
+    {
+
+        if (patrol.point1 == null || patrol.point2 == null)
+        {
+            GD.PrintErr($"{body.Name} patrol/points are null {patrol.GetPath()}");
+
+        }
+    }
+
 
 
 }
