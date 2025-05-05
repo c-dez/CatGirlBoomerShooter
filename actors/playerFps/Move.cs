@@ -74,7 +74,7 @@ namespace Actors.Players
             Jump(velocity, (float)delta);
             WallJump();
 
-            
+
         }
 
 

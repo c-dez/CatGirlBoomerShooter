@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="CatGirlBoomerShooter"
+config/tags=PackedStringArray("focus")
 run/main_scene="uid://dtewbija3dquh"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 run/max_fps=60

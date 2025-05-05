@@ -10,8 +10,8 @@ public partial class PatrolPoint1 : Node3D
     {
         mesh = GetNode<MeshInstance3D>("MeshInstance3D");
         area = GetNode<Area3D>("Area3D");
-        
+
     }
 
-   
+
 }

@@ -40,7 +40,7 @@ namespace Actors.Enemies
             areaDetectPatrolPoints = GetNode<Area3D>("Components/AreaDetectPatrolPoints");
             //signal
             areaDetectPatrolPoints.AreaEntered += OnAreaEntered;
-            behaviorStateMachine.state = (int)BehaviorStateMachine.Behavior_State.patroling;
+            behaviorStateMachine.state = (int)BehaviorStateMachine.Behavior_State.idle;
 
 
 
@@ -61,7 +61,10 @@ namespace Actors.Enemies
                     // nav.NavigateTo((float)delta, patrol.point1.GlobalPosition, 0f);
                     break;
                 case (int)BehaviorStateMachine.Behavior_State.patroling:
-                    nav.NavigateTo((float)delta, patrol.patrolPointsNodes[patrolPointsNodesIndex].GlobalPosition, speed);
+                    nav.NavigateTo((float)delta, patrol.patrolPointsNodes[patrolPointsNodesIndex].GlobalPosition, walkSpeed);
+                    break;
+                case (int) BehaviorStateMachine.Behavior_State.chase:
+                    nav.NavigateTo((float)delta,player.GlobalPosition, speed);
                     break;
 
                 default:

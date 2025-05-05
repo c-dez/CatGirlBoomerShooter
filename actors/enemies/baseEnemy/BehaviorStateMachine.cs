@@ -2,9 +2,6 @@ using Godot;
 using System;
 namespace Actors.Enemies
 {
-
-
-
     public partial class BehaviorStateMachine : Node
     {
         public enum Behavior_State
@@ -13,34 +10,44 @@ namespace Actors.Enemies
             patroling,
             investigate,
             chase
-
         }
 
         public int state;
-        // [ExportGroup("Behavior Nodes")]
-        // [Export] private Node idle;
-        // [Export] private Node investigate;
-        // [Export] private Node chase;
+        public NavigationAgent3D nav;
+        public Area3D visionCone;
+
+        public override void _Ready()
+        {
+            nav = GetParent<Node3D>().GetNode<NavigationAgent3D>("NavigationAgent3D");
+            visionCone = GetParent<Node3D>().GetNode<Area3D>("VisionCone");
+            visionCone.BodyEntered += OnPlayerEntered;
+            visionCone.BodyExited += OnPlayerExited;
+        }
+        
 
 
         public override void _PhysicsProcess(double delta)
         {
-            // GD.Print(state);
-            // if (Input.IsActionJustPressed("e_key"))
-            // {
-            //     if (state == 1)
-            //     {
-            //         state = 0;
-            //     }
-            //     else{
-            //         state = 1;
-            //     }
-            // }
+           
+        }
 
-            if (Input.IsActionJustPressed("q_key"))
+        private void OnPlayerEntered(Node3D body)
+        {
+            if (body.IsInGroup("Player"))
             {
-                state = 0;
+                GD.Print($"{Name} detected {body.Name}");
+                state =(int)Behavior_State.chase;
             }
+        }
+
+
+        private void OnPlayerExited(Node3D body)
+        {
+            if (body.IsInGroup("Player"))
+            {
+                GD.Print($"{Name} lost {body.Name}");
+                state =(int)Behavior_State.idle;
+            }   
         }
 
     }

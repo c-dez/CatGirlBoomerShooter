@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://di3i83c1pj8jm"]
+[gd_scene load_steps=11 format=3 uid="uid://di3i83c1pj8jm"]
 
 [ext_resource type="Script" uid="uid://ckw385qysc2tn" path="res://actors/enemies/baseEnemy/BaseEnemy.cs" id="1_ycvn3"]
 [ext_resource type="Script" uid="uid://5vd2vhhv5xll" path="res://actors/enemies/baseEnemy/behaviorStateMachine/NavigationAgent3d.cs" id="2_eiuyy"]
 [ext_resource type="Script" uid="uid://dha75c28lwunk" path="res://actors/enemies/baseEnemy/BehaviorStateMachine.cs" id="3_all22"]
 [ext_resource type="Texture2D" uid="uid://djjdx7trlxwg6" path="res://cute__catgirl__military__revolver_S3097673113_St25_G7.5.jpeg" id="3_in30a"]
 [ext_resource type="Script" uid="uid://b14k7xq4v84nt" path="res://actors/enemies/baseEnemy/behaviorStateMachine/Patrol.cs" id="3_mor54"]
+[ext_resource type="Script" uid="uid://daik4bqrc6n04" path="res://actors/enemies/baseEnemy/vision_cone.gd" id="6_vh70f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aw7eb"]
 
@@ -12,6 +13,9 @@
 radius = 1.0
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_24atw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eiuyy"]
+size = Vector3(7, 1, 10)
 
 [node name="BaseEnemy" type="CharacterBody3D"]
 collision_layer = 4
@@ -61,3 +65,18 @@ texture = ExtResource("3_in30a")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Components/Skin"]
 mesh = SubResource("CapsuleMesh_24atw")
+
+[node name="VisionCone" type="Area3D" parent="Components"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_vh70f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/VisionCone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.4406)
+shape = SubResource("BoxShape3D_eiuyy")
+
+[node name="RayCast3D" type="RayCast3D" parent="Components/VisionCone"]
+target_position = Vector3(0, 0, 10)
+
+[connection signal="body_entered" from="Components/VisionCone" to="Components/VisionCone" method="_on_body_entered"]
