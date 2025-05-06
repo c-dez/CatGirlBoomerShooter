@@ -58,7 +58,7 @@ namespace Actors.Enemies
             switch (behaviorStateMachine.state)
             {
                 case (int)BehaviorStateMachine.Behavior_State.idle:
-                    // nav.NavigateTo((float)delta, patrol.point1.GlobalPosition, 0f);
+                    nav.NavigateTo((float)delta, GlobalPosition, 0f);
                     break;
                 case (int)BehaviorStateMachine.Behavior_State.patroling:
                     nav.NavigateTo((float)delta, patrol.patrolPointsNodes[patrolPointsNodesIndex].GlobalPosition, walkSpeed);
@@ -70,17 +70,6 @@ namespace Actors.Enemies
                 default:
                     GD.PrintErr($"No State: {Name} switch");
                     break;
-            }
-            if (Input.IsActionJustPressed("e_key"))
-            {
-                if (behaviorStateMachine.state == 1)
-                {
-                    behaviorStateMachine.state = 0;
-                }
-                else
-                {
-                    behaviorStateMachine.state = 1;
-                }
             }
         }
 
