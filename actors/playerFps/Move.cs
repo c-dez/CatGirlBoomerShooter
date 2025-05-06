@@ -114,7 +114,6 @@ namespace Actors.Players
             float _speed = speed * speedModifier;
             if (player.IsOnFloor())
             {
-
                 if (moveDirection.Length() > 0.2f)
                 {
                     velocity.X = moveDirection.X * _speed;

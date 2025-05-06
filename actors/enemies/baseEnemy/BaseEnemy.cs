@@ -54,7 +54,7 @@ namespace Actors.Enemies
 
             Gravity();
             OnDead();
-
+            // Mover a funcion cuando este lista
             switch (behaviorStateMachine.state)
             {
                 case (int)BehaviorStateMachine.Behavior_State.idle:
@@ -68,7 +68,7 @@ namespace Actors.Enemies
                     break;
 
                 default:
-                    GD.PrintErr($"No State: {Name} switch");
+                    GD.PrintErr($"No State in {Name}  behaviorStateMachine switch");
                     break;
             }
         }

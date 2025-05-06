@@ -41,21 +41,23 @@ namespace Actors.Enemies
                 {
                     // Ray mira hacia uso mucho esta logica deberia hacerla funcion global
                     Vector3 direction = visionCone.GetOverlappingBodies()[0].GlobalPosition - visionRay.GlobalPosition;
-                    Vector3 targetDirection = new(direction.X, 0, direction.Z);
-                    Vector2 targetVector = new(targetDirection.X, targetDirection.Z);
-                    float targetAngle = -targetVector.Angle() + Mathf.Pi / 2;
-                    Vector3 rotation = visionRay.Rotation;
-                    rotation.Y = Mathf.RotateToward(visionRay.Rotation.Y, targetAngle, (float)delta * 6f);
-                    visionRay.Rotation = rotation;
-                    // Posible problema al ver a otro
-                    if (visionRay.GetCollider() is CharacterBody3D)
-                    {
-                        visionRayDetectsPlayer = true;
-                    }
-                    else
-                    {
-                        visionRayDetectsPlayer = false;
-                    }
+                    direction = direction.Normalized();
+                    // calcula y (horizontal)
+                    float targetAngleY = Mathf.Atan2(direction.X, direction.Z);
+                    float currentY = visionRay.Rotation.Y;
+                    float newY = Mathf.RotateToward(currentY,targetAngleY, (float)delta * 6f);
+                    
+                    // calcula x (vertical)
+                    float targetAngleX = - Mathf.Asin(direction.Y);
+                    float currentX = visionRay.Rotation.X;
+                    float newX = Mathf.RotateToward(currentX, targetAngleX, (float)delta * 6f);
+
+                    // aplicar rotacion
+                    visionRay.Rotation = new Vector3(newX, newY, 0);
+
+                    // Posible problema al ver a otro CharacteBody3D
+                    // Esta si por que player solo es un Characterbody3d, solo hereda de CharacterBody3D
+                    visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
                 }
             }
             // Si los dos ven a jugador, se cambia de state
