@@ -20,21 +20,21 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             // Attack();
-            Dodge();
+            // Dodge();
             // userInputs.GetLastMoveDirection();
             // GD.Print(userInputs.GetLastMoveDirection());
 
 
         }
 
-        private void Dodge()
-        {
-            if (userInputs.GetUserLastMoveDirectionInput() != Vector3.Zero)
-            {
+        // private void Dodge()
+        // {
+        //     if (userInputs.GetUserLastMoveDirectionInput() != Vector3.Zero)
+        //     {
 
-            }
-            // GD.Print(userInputs.GetLastMoveDirection());
-        }
+        //     }
+        //     // GD.Print(userInputs.GetLastMoveDirection());
+        // }
 
 
         // private void Attack()

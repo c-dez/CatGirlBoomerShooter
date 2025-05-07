@@ -69,7 +69,7 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             Vector3 velocity = player.Velocity;
-            MoveOnFloor(userInputs.moveDirection, velocity);
+            MoveOnFloor(userInputs.moveDirection, velocity,userInputs.LastMoveDirection);
             LastMoveDirection(userInputs.moveDirection);
             Jump(velocity, (float)delta);
             WallJump();
@@ -111,12 +111,12 @@ namespace Actors.Players
         }
 
 
-        private void MoveOnFloor(Vector3 moveDirection, Vector3 velocity)
+        private void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 lastMoveDirection)
         {
             float _speed = speed * speedModifier;
             if (player.IsOnFloor())
             {
-                if (moveDirection.Length() > 0.2f)
+                if (moveDirection.Length() > 0.2f && lastMoveDirection == Vector3.Zero)
                 {
                     velocity.X = moveDirection.X * _speed;
                     velocity.Z = moveDirection.Z * _speed;

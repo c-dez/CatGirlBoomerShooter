@@ -4,12 +4,13 @@ namespace Actors.Players
     public partial class UserInputs : Node
     {
         [Export] private Node3D camera;
-        private Timer jumpTimer;
-        private Timer shiftTimer;
+        [Export] private float DodgeTimeDuration = 0.25f;
         public Vector3 moveDirection = Vector3.Zero;
-        private Vector3 LastMoveDirection = Vector3.Zero;
+        public Vector3 LastMoveDirection = Vector3.Zero;
         public bool jumpPressed = false;
         public bool ShiftPressed = false;
+        private Timer shiftTimer;
+        private Timer jumpTimer;
 
 
 
@@ -18,23 +19,37 @@ namespace Actors.Players
         {
             jumpTimer = GetNode<Timer>("JumpTimer");
             shiftTimer = GetNode<Timer>("ShiftTimer");
+
         }
+
+
         public override void _Process(double delta)
         {
             GetMoveDirection();
             JumpBuffer();
-            ShiftBuffer();
-            GetUserLastMoveDirectionInput();
+            DodgePressed();
 
         }
 
-        public virtual Vector3 GetUserLastMoveDirectionInput()
+
+        private void DodgePressed()
         {
-            if (Input.IsActionJustPressed("shift"))
+            // Esta funcion se encarga de hacer buffer a tecla shift, asignar valor a lastMoveDirection
+            // Y se usa en Actors.Players.Move.MoveOnFloor() para que decida  que moveDirection usar
+            if (Input.IsActionJustPressed("shift") && LastMoveDirection == Vector3.Zero && !ShiftPressed)
             {
+                shiftTimer.Start(DodgeTimeDuration);
                 LastMoveDirection = moveDirection;
             }
-            return LastMoveDirection;
+            if (shiftTimer.TimeLeft > 0)
+            {
+                ShiftPressed = true;
+            }
+            else
+            {
+                ShiftPressed = false;
+                LastMoveDirection = Vector3.Zero;
+            }
         }
 
 
@@ -57,14 +72,7 @@ namespace Actors.Players
             jumpPressed = jumpTimer.TimeLeft > 0f;
         }
 
-        private void ShiftBuffer()
-        {
-            if (Input.IsActionJustPressed("shift"))
-            {
-                shiftTimer.Start();
-            }
-            ShiftPressed = shiftTimer.TimeLeft > 0f;
-        }
+
 
     }
 
