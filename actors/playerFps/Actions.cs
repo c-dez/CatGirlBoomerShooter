@@ -17,7 +17,6 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             Attack();
-            // GD.Print(isAttacking);
 
         }
 

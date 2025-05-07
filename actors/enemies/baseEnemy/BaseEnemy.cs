@@ -105,13 +105,13 @@ namespace Actors.Enemies
 
         public virtual void RangeAttack()
         {
-            GD.Print("range attack");
+            GD.Print($"range attack from {Name}");
         }
 
 
         public virtual void AttackMelee()
         {
-            GD.Print($"attack for: {attackDamage} ");
+            GD.Print($"attack for: {attackDamage} from {Name} ");
         }
 
 

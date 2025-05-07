@@ -21,7 +21,6 @@ namespace Actors.Players
             GetMoveDirection();
             JumpBuffer();
             ShiftBuffer();
-            GD.Print(ShiftPressed);
         }
 
 

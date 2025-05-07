@@ -22,6 +22,7 @@ uv1_triplanar = true
 navigation_mesh = SubResource("NavigationMesh_eed3i")
 
 [node name="GateWalls" type="CSGCombiner3D" parent="."]
+use_collision = true
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="GateWalls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.52, 2.025, -26.5495)
