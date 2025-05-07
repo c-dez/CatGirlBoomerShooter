@@ -7,8 +7,11 @@ namespace Actors.Players
         private Timer jumpTimer;
         private Timer shiftTimer;
         public Vector3 moveDirection = Vector3.Zero;
+        private Vector3 LastMoveDirection = Vector3.Zero;
         public bool jumpPressed = false;
         public bool ShiftPressed = false;
+
+
 
 
         public override void _Ready()
@@ -21,6 +24,17 @@ namespace Actors.Players
             GetMoveDirection();
             JumpBuffer();
             ShiftBuffer();
+            GetUserLastMoveDirectionInput();
+
+        }
+
+        public virtual Vector3 GetUserLastMoveDirectionInput()
+        {
+            if (Input.IsActionJustPressed("shift"))
+            {
+                LastMoveDirection = moveDirection;
+            }
+            return LastMoveDirection;
         }
 
 
@@ -55,4 +69,4 @@ namespace Actors.Players
     }
 
 }
-    
+

@@ -3,42 +3,59 @@ namespace Actors.Players
 {
     public partial class Actions : Node
     {
-        [Export] Timer secondAttackTimer;
-        private AnimationTree animationTree;
-        private AnimationNodeStateMachinePlayback attackStateMachine;
-        private bool isAttacking = false;
+        // [Export] Timer secondAttackTimer;
+        // private AnimationTree animationTree;
+        // private AnimationNodeStateMachinePlayback attackStateMachine;
+        // private bool isAttacking = false;
+        private UserInputs userInputs;
+
         public override void _Ready()
         {
-            animationTree = GetNode<AnimationTree>("../AnimationTree");
-            attackStateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/AttackStateMachine/playback");
-
+            // animationTree = GetNode<AnimationTree>("../AnimationTree");
+            // attackStateMachine = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/AttackStateMachine/playback");
+            userInputs = GetNode<UserInputs>("../UserInputs");
         }
+        
 
         public override void _PhysicsProcess(double delta)
         {
-            Attack();
+            // Attack();
+            Dodge();
+            // userInputs.GetLastMoveDirection();
+            // GD.Print(userInputs.GetLastMoveDirection());
+
 
         }
 
-        private void Attack()
+        private void Dodge()
         {
-            if (Input.IsActionJustPressed("mb1") && !isAttacking)
+            if (userInputs.GetUserLastMoveDirectionInput() != Vector3.Zero)
             {
-                animationTree.Set("parameters/AttackOneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
-                attackStateMachine.Travel(secondAttackTimer.TimeLeft > 0f ? "attack2" : "attack1");
+
             }
+            // GD.Print(userInputs.GetLastMoveDirection());
         }
 
 
-        private void AttackingToggle(bool value)
-        {
-            isAttacking = value;
-        }
+        // private void Attack()
+        // {
+        //     if (Input.IsActionJustPressed("mb1") && !isAttacking)
+        //     {
+        //         animationTree.Set("parameters/AttackOneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
+        //         attackStateMachine.Travel(secondAttackTimer.TimeLeft > 0f ? "attack2" : "attack1");
+        //     }
+        // }
 
 
-        private void StartSecondAttackTimer()
-        {
-            secondAttackTimer.Start();
-        }
+        // private void AttackingToggle(bool value)
+        // {
+        //     isAttacking = value;
+        // }
+
+
+        // private void StartSecondAttackTimer()
+        // {
+        //     secondAttackTimer.Start();
+        // }
     }
 }

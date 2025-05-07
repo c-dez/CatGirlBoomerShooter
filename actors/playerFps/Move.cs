@@ -75,6 +75,8 @@ namespace Actors.Players
             WallJump();
 
 
+
+
         }
 
 
@@ -134,6 +136,7 @@ namespace Actors.Players
                     }
                 }
             }
+
             else
             {
                 {
@@ -160,7 +163,7 @@ namespace Actors.Players
 
         private void Jump(Vector3 velocity, float _delta)
         {
-            if (userInputs.jumpPressed && (coyoteTimeCounter > 0.01f ))
+            if (userInputs.jumpPressed && (coyoteTimeCounter > 0.01f))
             {
                 velocity.Y = jumpVelocity;
                 jumpBufferCounter = 0f;
