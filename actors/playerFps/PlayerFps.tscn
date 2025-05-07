@@ -49,6 +49,10 @@ camera = NodePath("../ThirdPersonCamera/SpringArm3D/Camera3D")
 wait_time = 0.25
 one_shot = true
 
+[node name="ShiftTimer" type="Timer" parent="Components/UserInputs"]
+wait_time = 0.25
+one_shot = true
+
 [node name="ThirdPersonCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("3_j7sdg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28241, 0)
 userInputs = NodePath("../UserInputs")
