@@ -24,6 +24,7 @@ namespace Actors.Players
         [Export] float jumpTimeToPeak; //0.4
         [Export] float jumpTimeToDecend; //0.5
         [Export] private float wallJumpForce = 4.0f;
+        [Export] private float DodgeSpeed = 1f;
 
         float coyoteTimeMax = 0.3f;
         float jumpBufferMax = 0.5f;
@@ -69,13 +70,10 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             Vector3 velocity = player.Velocity;
-            MoveOnFloor(userInputs.moveDirection, velocity,userInputs.LastMoveDirection);
+            MoveOnFloor(userInputs.moveDirection, velocity, userInputs.LastMoveDirection);
             LastMoveDirection(userInputs.moveDirection);
             Jump(velocity, (float)delta);
             WallJump();
-
-
-
 
         }
 
@@ -118,6 +116,7 @@ namespace Actors.Players
             {
                 if (moveDirection.Length() > 0.2f && lastMoveDirection == Vector3.Zero)
                 {
+                    // Movimiento normal
                     velocity.X = moveDirection.X * _speed;
                     velocity.Z = moveDirection.Z * _speed;
                     if (player.IsOnFloor())
@@ -125,8 +124,15 @@ namespace Actors.Players
                         // moveStateMachine.Travel("run");
                     }
                 }
+                else if (lastMoveDirection != Vector3.Zero)
+                {
+                    // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
+                    velocity.X = lastMoveDirection.X * _speed * DodgeSpeed;
+                    velocity.Z = lastMoveDirection.Z * _speed * DodgeSpeed;
+                }
                 else
                 {
+                    // Cuando user no hay input
                     velocity.X = Mathf.MoveToward(player.Velocity.X, 0, _speed);
                     velocity.Z = Mathf.MoveToward(player.Velocity.Z, 0, _speed);
 
@@ -136,7 +142,6 @@ namespace Actors.Players
                     }
                 }
             }
-
             else
             {
                 {

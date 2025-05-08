@@ -41,12 +41,13 @@ jumpHeight = 1.0
 jumpTimeToPeak = 0.4
 jumpTimeToDecend = 0.5
 wallJumpForce = 5.0
+DodgeSpeed = 1.5
 
 [node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_5s81b")
 camera = NodePath("../ThirdPersonCamera/SpringArm3D/Camera3D")
-DodgeTimeDuration = 1.0
-ShiftBufferTime = 1.0
+DodgeTimeDuration = 0.5
+ShiftBufferTime = 0.5
 
 [node name="JumpTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
@@ -54,6 +55,9 @@ one_shot = true
 
 [node name="ShiftTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
+one_shot = true
+
+[node name="DodgeTimer" type="Timer" parent="Components/UserInputs"]
 one_shot = true
 
 [node name="ThirdPersonCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("3_j7sdg")]
