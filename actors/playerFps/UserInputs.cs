@@ -90,7 +90,8 @@ namespace Actors.Players
         
         private void ShiftBuffer()
         {
-            if (Input.IsActionJustPressed("shift"))
+            // ATENCION Cambiado "shift" a "mb1" para testing
+            if (Input.IsActionJustPressed("mb2"))
             {
                 shiftTimer.Start(ShiftBufferTime);
             }

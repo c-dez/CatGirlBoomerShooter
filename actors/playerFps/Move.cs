@@ -14,28 +14,22 @@ namespace Actors.Players
 
         [ExportGroup("Movement")]
         // private AnimationNodeStateMachinePlayback moveStateMachine;
-        private float speedModifier = 1.0f;
-        private Vector3 lastMovementDirection = Vector3.Back;
-        private float rotationSpeed = 12.0f;
         [Export] public float speed = 8.0f;
-
-        //jump
-        [Export] float jumpHeight; //1
-        [Export] float jumpTimeToPeak; //0.4
-        [Export] float jumpTimeToDecend; //0.5
-        [Export] private float wallJumpForce = 4.0f;
-        [Export] private float DodgeSpeed = 1f;
+        [Export] float jumpHeight; // 1 me gusta como se sienten estos valores
+        [Export] float jumpTimeToPeak; // 0.4
+        [Export] float jumpTimeToDecend; // 0.5
+        [Export] private float wallJumpForce = 4.0f; // 5
+        [Export] private float DodgeSpeed = 1f; // 1.7
+        private float speedModifier = 1.0f;
 
         float coyoteTimeMax = 0.3f;
-        float jumpBufferMax = 0.5f;
         float coyoteTimeCounter = 0f;
         float jumpBufferCounter = 0f;
         float jumpVelocity;
         float jumpGravity;
         float fallGravity;
 
-        // nombre muy similar a lastMovementDirection cambiar por claridad
-        Vector3 lastMoveDirectionOnFloor = Vector3.Zero;
+
 
         //squash
         private float _squashAndStretch = 1.0f;
@@ -57,24 +51,21 @@ namespace Actors.Players
         public override void _Ready()
         {
             // calcula etapas de jump
-            jumpVelocity = (2.0f * jumpHeight) / jumpTimeToPeak;
-            jumpGravity = (-2.0f * jumpHeight) / (jumpTimeToPeak * jumpTimeToPeak);
-            fallGravity = (-2.0f * jumpHeight) / (jumpTimeToDecend * jumpTimeToDecend);
+            jumpVelocity = 2.0f * jumpHeight / jumpTimeToPeak;
+            jumpGravity = -2.0f * jumpHeight / (jumpTimeToPeak * jumpTimeToPeak);
+            fallGravity = -2.0f * jumpHeight / (jumpTimeToDecend * jumpTimeToDecend);
             //wall jump signals
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
-
-
         }
+
 
         public override void _PhysicsProcess(double delta)
         {
             Vector3 velocity = player.Velocity;
             MoveOnFloor(userInputs.moveDirection, velocity, userInputs.LastMoveDirection);
-            LastMoveDirection(userInputs.moveDirection);
             Jump(velocity, (float)delta);
             WallJump();
-
         }
 
 
@@ -154,15 +145,6 @@ namespace Actors.Players
             rot.X = 0f;
             player.Rotation = rot;
             player.MoveAndSlide();
-        }
-
-
-        private void LastMoveDirection(Vector3 moveDirection)
-        {
-            if (player.IsOnFloor())
-            {
-                lastMoveDirectionOnFloor = moveDirection;
-            }
         }
 
 
