@@ -42,7 +42,7 @@ namespace Actors.Players
 
         private void SkinRotation()
         {
-            Vector3 moveDirection = userInputs.moveDirection;
+            Vector3 moveDirection = userInputs.MoveDirection;
             if (moveDirection.Length() < 0.2f)
             {
             }

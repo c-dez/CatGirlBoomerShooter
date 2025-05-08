@@ -1,25 +1,23 @@
 using Godot;
-// using Players;
-using static Godot.GD;
 namespace Actors.Players
 {
 
     public partial class Move : Node
     {
         [ExportGroup("Nodes")]
-        [Export] private CharacterBody3D player;
+        [Export] CharacterBody3D player;
         // [Export] public Node3D skin;
-        [Export] private Area3D wallArea;
-        [Export] private UserInputs userInputs;
+        [Export] Area3D wallArea;
+        [Export] UserInputs userInputs;
 
         [ExportGroup("Movement")]
         // private AnimationNodeStateMachinePlayback moveStateMachine;
-        [Export] public float speed = 8.0f;
+        [Export] float speed = 8.0f;
         [Export] float jumpHeight; // 1 me gusta como se sienten estos valores
         [Export] float jumpTimeToPeak; // 0.4
         [Export] float jumpTimeToDecend; // 0.5
-        [Export] private float wallJumpForce = 4.0f; // 5
-        [Export] private float DodgeSpeed = 1f; // 1.7
+        [Export] float wallJumpForce = 4.0f; // 5
+        [Export] float DodgeSpeed = 1f; // 1.7
         private float speedModifier = 1.0f;
 
         float coyoteTimeMax = 0.3f;
@@ -32,8 +30,8 @@ namespace Actors.Players
 
 
         //squash
-        private float _squashAndStretch = 1.0f;
-        private float SquashAndStretch
+        float _squashAndStretch = 1.0f;
+        float SquashAndStretch
         {
             get => _squashAndStretch;
             set
@@ -45,7 +43,7 @@ namespace Actors.Players
         }
 
         // wall jump
-        private bool canWallJump = false;
+        bool canWallJump = false;
 
 
         public override void _Ready()
@@ -63,20 +61,20 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             Vector3 velocity = player.Velocity;
-            MoveOnFloor(userInputs.moveDirection, velocity, userInputs.LastMoveDirection);
+            MoveOnFloor(userInputs.MoveDirection, velocity, userInputs.LastMoveDirection);
             Jump(velocity, (float)delta);
             WallJump();
         }
 
 
-        private void WallJump()
+        void WallJump()
         {
             Vector3 velocity = player.Velocity;
             if (canWallJump)
             {
                 if (!player.IsOnFloor())
                 {
-                    if (userInputs.jumpPressed)
+                    if (userInputs.JumpKeyPressed)
                     {
                         velocity.Y = wallJumpForce;
                         canWallJump = false;
@@ -88,28 +86,27 @@ namespace Actors.Players
         }
 
 
-        private void OnWallAreaEntered(Node3D area)
+        void OnWallAreaEntered(Node3D area)
         {
             canWallJump = true;
         }
 
 
-        private void OnWallAreaExited(Node3D area)
+        void OnWallAreaExited(Node3D area)
         {
             canWallJump = false;
         }
 
 
-        private void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 lastMoveDirection)
+        void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 lastMoveDirection)
         {
-            float _speed = speed * speedModifier;
             if (player.IsOnFloor())
             {
                 if (moveDirection.Length() > 0.2f && lastMoveDirection == Vector3.Zero)
                 {
                     // Movimiento normal
-                    velocity.X = moveDirection.X * _speed;
-                    velocity.Z = moveDirection.Z * _speed;
+                    velocity.X = moveDirection.X * speed;
+                    velocity.Z = moveDirection.Z * speed;
                     if (player.IsOnFloor())
                     {
                         // moveStateMachine.Travel("run");
@@ -118,14 +115,14 @@ namespace Actors.Players
                 else if (lastMoveDirection != Vector3.Zero)
                 {
                     // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
-                    velocity.X = lastMoveDirection.X * _speed * DodgeSpeed;
-                    velocity.Z = lastMoveDirection.Z * _speed * DodgeSpeed;
+                    velocity.X = lastMoveDirection.X * DodgeSpeed;
+                    velocity.Z = lastMoveDirection.Z * DodgeSpeed;
                 }
                 else
                 {
                     // Cuando user no hay input
-                    velocity.X = Mathf.MoveToward(player.Velocity.X, 0, _speed);
-                    velocity.Z = Mathf.MoveToward(player.Velocity.Z, 0, _speed);
+                    velocity.X = Mathf.MoveToward(player.Velocity.X, 0, speed);
+                    velocity.Z = Mathf.MoveToward(player.Velocity.Z, 0, speed);
 
                     if (player.IsOnFloor())
                     {
@@ -136,8 +133,8 @@ namespace Actors.Players
             else
             {
                 {
-                    velocity.X = moveDirection.X * _speed;
-                    velocity.Z = moveDirection.Z * _speed;
+                    velocity.X = moveDirection.X * speed;
+                    velocity.Z = moveDirection.Z * speed;
                 }
             }
             player.Velocity = velocity;
@@ -148,9 +145,9 @@ namespace Actors.Players
         }
 
 
-        private void Jump(Vector3 velocity, float _delta)
+        void Jump(Vector3 velocity, float _delta)
         {
-            if (userInputs.jumpPressed && (coyoteTimeCounter > 0.01f))
+            if (userInputs.JumpKeyPressed && (coyoteTimeCounter > 0.01f))
             {
                 velocity.Y = jumpVelocity;
                 jumpBufferCounter = 0f;
@@ -176,7 +173,7 @@ namespace Actors.Players
         }
 
 
-        private void DoSquashAndStretch(float value, float duration = 1.0f)
+        void DoSquashAndStretch(float value, float duration = 1.0f)
         {
             Tween tween = CreateTween();
             tween.TweenProperty(this, "SquashAndStretch", value, duration);

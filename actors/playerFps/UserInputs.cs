@@ -1,101 +1,101 @@
-using System.Collections.Generic;
 using Godot;
 namespace Actors.Players
 {
     public partial class UserInputs : Node
     {
-        [Export] private Node3D camera;
-        [Export] private float DodgeTimeDuration = 0.25f;
-        [Export] private float ShiftBufferTime = 1f;
-        private CharacterBody3D player;
-        private Timer jumpTimer;
-        private Timer shiftTimer;
-        private Timer dodgeTimer;
-        public Vector3 moveDirection = Vector3.Zero;
+        [Export] Node3D Camera;
+        [Export] float IsDogingTime = 0.25f;
+        [Export] float DodgeKeyBufferTime = 0.3f;
+        CharacterBody3D Player;
+        Timer JumpKeyBufferTimerNode;
+        Timer DodgeKeyTimerBufferNode;
+        Timer IsDogingTimerNode;
+        public Vector3 MoveDirection = Vector3.Zero;
         public Vector3 LastMoveDirection = Vector3.Zero;
-        public bool jumpPressed = false;
-        public bool ShiftPressed = false;
-
+        public bool JumpKeyPressed = false;
+        bool DodgeKeyPressed = false;
 
 
         // debug
-        private int frames = 0;
+        int frames = 0;
 
 
         public override void _Ready()
         {
-            jumpTimer = GetNode<Timer>("JumpTimer");
-            shiftTimer = GetNode<Timer>("ShiftTimer");
-            player = GetNode<CharacterBody3D>("../..");
-            dodgeTimer = GetNode<Timer>("DodgeTimer");
+            JumpKeyBufferTimerNode = GetNode<Timer>("JumpKeyBufferTimer");
+            DodgeKeyTimerBufferNode = GetNode<Timer>("DodgeKeyBufferTimer");
+            IsDogingTimerNode = GetNode<Timer>("IsDogingTimer");
+            Player = GetNode<CharacterBody3D>("../..");
         }
 
 
         public override void _Process(double delta)
         {
             GetMoveDirection();
-            JumpBuffer();
-            ShiftBuffer();
+            JumpKeyBuffer();
+            DodgeKeyBuffer();
             DoDodge();
 
             //debug
-            if (dodgeTimer.TimeLeft > 0)
-            {
-                frames++;
+            // if (dodgeTimer.TimeLeft > 0)
+            // {
+            //     frames++;
 
-            }
-            if (dodgeTimer.TimeLeft == 0 && frames > 0)
-            {
-                GD.Print($"Dodge frames {frames}");
-                frames = 0;
-            }
+            // }
+            // if (dodgeTimer.TimeLeft == 0 && frames > 0)
+            // {
+            //     GD.Print($"Dodge frames {frames}");
+            //     frames = 0;
+            // }
         }
 
 
-        private void DoDodge()
+        void DoDodge()
+        // Deberia de estar en este script de UserInputs?
         {
             // hace dodge cuando esta en el suelo bloqueando la  direccion de el usuario con la ultima direccion antes de dodge, hasta que dodge termina
-            if (ShiftPressed && LastMoveDirection == Vector3.Zero && player.IsOnFloor())
+            if (DodgeKeyPressed && LastMoveDirection == Vector3.Zero && Player.IsOnFloor())
             {
-                dodgeTimer.Start(DodgeTimeDuration);
-                LastMoveDirection = moveDirection;
+                IsDogingTimerNode.Start(IsDogingTime);
+                LastMoveDirection = MoveDirection;
             }
-            if (dodgeTimer.TimeLeft == 0)
+            if (IsDogingTimerNode.TimeLeft == 0)
             {
                 LastMoveDirection = Vector3.Zero;
             }
         }
 
 
-        private void GetMoveDirection()
+        void GetMoveDirection()
         {
             Vector2 rawInput = Input.GetVector("left", "right", "forward", "backwards");
-            Vector3 forward = camera.GlobalBasis.Z;
+            Vector3 forward = Camera.GlobalBasis.Z;
             forward.Y = 0;
-            Vector3 right = camera.GlobalBasis.X;
+            Vector3 right = Camera.GlobalBasis.X;
             right.Y = 0;
-            moveDirection = (forward * rawInput.Y + right * rawInput.X).Normalized();
+            MoveDirection = (forward * rawInput.Y + right * rawInput.X).Normalized();
         }
 
 
-        private void JumpBuffer()
+        void JumpKeyBuffer()
         {
             if (Input.IsActionJustPressed("space"))
             {
-                jumpTimer.Start();
+                JumpKeyBufferTimerNode.Start();
             }
-            jumpPressed = jumpTimer.TimeLeft > 0f;
+            JumpKeyPressed = JumpKeyBufferTimerNode.TimeLeft > 0f;
         }
 
-        
-        private void ShiftBuffer()
+
+        void DodgeKeyBuffer()
         {
             // ATENCION Cambiado "shift" a "mb1" para testing
-            if (Input.IsActionJustPressed("mb2"))
+            // ATENCION DodgeKeyBufferTime tiene que ser menor que IsDogingTime si no causa errores de logica y se dispara 2 veces dodge al seguir introduciendo input de movimiento
+            if (Input.IsActionJustPressed("mb2") )
             {
-                shiftTimer.Start(ShiftBufferTime);
+                DodgeKeyTimerBufferNode.Start(DodgeKeyBufferTime);
             }
-            ShiftPressed = shiftTimer.TimeLeft > 0;
+            DodgeKeyPressed = DodgeKeyTimerBufferNode.TimeLeft > 0f;
         }
 
     }

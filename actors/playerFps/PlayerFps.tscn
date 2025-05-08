@@ -35,28 +35,27 @@ script = ExtResource("3_32gnp")
 player = NodePath("../..")
 wallArea = NodePath("../WallJumpAreaDetection")
 userInputs = NodePath("../UserInputs")
-speed = 10.0
 jumpHeight = 1.0
 jumpTimeToPeak = 0.4
 jumpTimeToDecend = 0.5
 wallJumpForce = 5.0
-DodgeSpeed = 1.7
+DodgeSpeed = 15.0
 
-[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("camera")]
+[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_5s81b")
-camera = NodePath("../ThirdPersonCamera/SpringArm3D/Camera3D")
-DodgeTimeDuration = 0.3
-ShiftBufferTime = 0.2
+Camera = NodePath("../ThirdPersonCamera")
+IsDogingTime = 0.5
+DodgeKeyBufferTime = 0.2
 
-[node name="JumpTimer" type="Timer" parent="Components/UserInputs"]
+[node name="JumpKeyBufferTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
 one_shot = true
 
-[node name="ShiftTimer" type="Timer" parent="Components/UserInputs"]
+[node name="DodgeKeyBufferTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
 one_shot = true
 
-[node name="DodgeTimer" type="Timer" parent="Components/UserInputs"]
+[node name="IsDogingTimer" type="Timer" parent="Components/UserInputs"]
 one_shot = true
 
 [node name="ThirdPersonCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("3_j7sdg")]
