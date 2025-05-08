@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 namespace Actors.Players
 {
@@ -10,7 +11,12 @@ namespace Actors.Players
         public bool jumpPressed = false;
         public bool ShiftPressed = false;
         private Timer shiftTimer;
+        [Export] private float ShiftBufferTime = 0.2f;
         private Timer jumpTimer;
+        
+
+        private int frames =0;
+
 
 
 
@@ -27,8 +33,10 @@ namespace Actors.Players
         {
             GetMoveDirection();
             JumpBuffer();
-            DodgePressed();
+            ShiftBuffer();
+            // DodgePressed();
 
+           
         }
 
 
@@ -36,20 +44,43 @@ namespace Actors.Players
         {
             // Esta funcion se encarga de hacer buffer a tecla shift, asignar valor a lastMoveDirection
             // Y se usa en Actors.Players.Move.MoveOnFloor() para que decida  que moveDirection usar
-            if (Input.IsActionJustPressed("shift") && LastMoveDirection == Vector3.Zero && !ShiftPressed)
+            // if (Input.IsActionJustPressed("shift") && LastMoveDirection == Vector3.Zero && !ShiftPressed)
+            // {
+            //     shiftTimer.Start(DodgeTimeDuration);
+            //     LastMoveDirection = moveDirection;
+            // }
+            // if (shiftTimer.TimeLeft > 0)
+            // {
+            //     ShiftPressed = true;
+            // }
+            // else
+            // {
+            //     ShiftPressed = false;
+            //     LastMoveDirection = Vector3.Zero;
+            // }
+        }
+
+        private void ShiftBuffer()
+        {
+            if (Input.IsActionJustPressed("shift") && !ShiftPressed)
             {
-                shiftTimer.Start(DodgeTimeDuration);
-                LastMoveDirection = moveDirection;
+                shiftTimer.Start(ShiftBufferTime);
             }
-            if (shiftTimer.TimeLeft > 0)
+            ShiftPressed = shiftTimer.TimeLeft > 0;
+            //debug
+            if (ShiftPressed)
             {
-                ShiftPressed = true;
+                frames++;
+
             }
-            else
+            if (!ShiftPressed && frames> 0)
             {
-                ShiftPressed = false;
-                LastMoveDirection = Vector3.Zero;
+                GD.Print($"Shift pressed frames {frames}");
+                frames = 0;
             }
+
+
+
         }
 
 

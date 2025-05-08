@@ -46,6 +46,7 @@ wallJumpForce = 5.0
 script = ExtResource("1_5s81b")
 camera = NodePath("../ThirdPersonCamera/SpringArm3D/Camera3D")
 DodgeTimeDuration = 1.0
+ShiftBufferTime = 1.0
 
 [node name="JumpTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
