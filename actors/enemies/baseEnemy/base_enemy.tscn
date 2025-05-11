@@ -14,13 +14,14 @@ radius = 1.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_24atw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eiuyy"]
-size = Vector3(13.88, 6.51, 10)
+size = Vector3(20, 10, 9.73)
 
 [node name="BaseEnemy" type="CharacterBody3D"]
 collision_layer = 4
-collision_mask = 31
-slide_on_ceiling = false
-floor_max_angle = 1.0472
+collision_mask = 29
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 script = ExtResource("1_ycvn3")
 attackDamage = 1
 noticeRadius = 100.0
@@ -66,17 +67,15 @@ texture = ExtResource("3_in30a")
 mesh = SubResource("CapsuleMesh_24atw")
 
 [node name="VisionCone" type="Area3D" parent="Components"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05509, 1)
 collision_layer = 0
 collision_mask = 2
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/VisionCone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.11951)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6.29001)
 shape = SubResource("BoxShape3D_eiuyy")
 
 [node name="RayCast3D" type="RayCast3D" parent="Components/VisionCone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 top_level = true
 target_position = Vector3(0, 0, 15)
 collision_mask = 3

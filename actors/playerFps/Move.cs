@@ -46,6 +46,7 @@ namespace Actors.Players
         bool canWallJump = false;
 
 
+
         public override void _Ready()
         {
             // calcula etapas de jump
@@ -55,6 +56,7 @@ namespace Actors.Players
             //wall jump signals
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
+
         }
 
 

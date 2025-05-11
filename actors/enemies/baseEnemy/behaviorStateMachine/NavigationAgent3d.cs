@@ -38,6 +38,4 @@ public partial class NavigationAgent3d : NavigationAgent3D
 
 
 
-
-
 }

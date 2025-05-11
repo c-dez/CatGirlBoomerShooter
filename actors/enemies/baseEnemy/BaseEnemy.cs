@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Godot;
 
@@ -30,6 +31,8 @@ namespace Actors.Enemies
         private int patrolPointsNodesIndex = 0;
         // private BehaviorStateMachine behaviorStateMachide;
 
+        PhysicsMaterial material = new PhysicsMaterial();
+
         public override void _Ready()
         {
             player = (CharacterBody3D)GetTree().GetFirstNodeInGroup("Player");
@@ -42,6 +45,8 @@ namespace Actors.Enemies
             areaDetectPatrolPoints.AreaEntered += OnAreaEntered;
             behaviorStateMachine.state = (int)BehaviorStateMachine.Behavior_State.idle;
 
+            material.Friction = 1f;
+            material.Absorbent = true;
 
 
             Debugg();

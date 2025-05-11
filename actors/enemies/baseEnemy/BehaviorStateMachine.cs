@@ -40,7 +40,7 @@ namespace Actors.Enemies
                 if (visionCone.GetOverlappingBodies()[0].IsInGroup("Player"))
                 {
                     // Ray mira hacia uso mucho esta logica deberia hacerla funcion global
-                    Vector3 direction = visionCone.GetOverlappingBodies()[0].GlobalPosition - visionRay.GlobalPosition;
+                    Vector3 direction = visionCone.GetOverlappingBodies()[0].GlobalPosition + new Vector3(0,1.0f,0) - visionRay.GlobalPosition;
                     direction = direction.Normalized();
                     // calcula y (horizontal)
                     float targetAngleY = Mathf.Atan2(direction.X, direction.Z);
@@ -52,7 +52,7 @@ namespace Actors.Enemies
                     float currentX = visionRay.Rotation.X;
                     float newX = Mathf.RotateToward(currentX, targetAngleX, (float)delta * 6f);
 
-                    // aplicar rotacion
+                    // // aplicar rotacion
                     visionRay.Rotation = new Vector3(newX, newY, 0);
 
                     // Posible problema al ver a otro CharacteBody3D
