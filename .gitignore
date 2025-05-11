@@ -3,7 +3,7 @@
 /android/
 /prefabs
 *.uid
-# *.tscn
+*.tscn
 /playerTemplate
 *.import
 *.svg

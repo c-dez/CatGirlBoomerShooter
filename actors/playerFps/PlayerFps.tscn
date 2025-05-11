@@ -1,16 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw2qu222mlyi4"]
+[gd_scene load_steps=10 format=3 uid="uid://bw2qu222mlyi4"]
 
 [ext_resource type="Script" uid="uid://pk4y6ed4tlka" path="res://actors/playerFps/UserInputs.cs" id="1_5s81b"]
 [ext_resource type="PackedScene" uid="uid://buswndoyp4rd6" path="res://actors/playerFps/CrossHair.tscn" id="1_32gnp"]
 [ext_resource type="Script" uid="uid://cm0ojkbr7latt" path="res://actors/playerFps/Move.cs" id="3_32gnp"]
-[ext_resource type="PackedScene" uid="uid://01qibbvkgdqi" path="res://actors/playerFps/third_person_camera.tscn" id="3_j7sdg"]
 [ext_resource type="Script" uid="uid://b830qn3gsedyq" path="res://actors/playerFps/Stats.cs" id="4_olk1m"]
 [ext_resource type="PackedScene" uid="uid://dufxcdpv7sdka" path="res://actors/playerFps/ui_portait.tscn" id="6_j7sdg"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j7sdg"]
-friction = 0.0
-rough = true
-absorbent = true
+[ext_resource type="PackedScene" uid="uid://dvcqsplxgscwe" path="res://blocks/FPScamera_3d.tscn" id="6_olk1m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6uhly"]
 
@@ -26,7 +21,6 @@ collision_mask = 13
 slide_on_ceiling = false
 platform_on_leave = 2
 platform_floor_layers = 4294901765
-metadata/material = SubResource("PhysicsMaterial_j7sdg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -51,8 +45,8 @@ DodgeSpeed = 15.0
 
 [node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_5s81b")
-Camera = NodePath("../ThirdPersonCamera")
-IsDogingTime = 0.5
+Camera = NodePath("../FPSCamera")
+IsDogingTime = 0.2
 DodgeKeyBufferTime = 0.2
 
 [node name="JumpKeyBufferTimer" type="Timer" parent="Components/UserInputs"]
@@ -65,10 +59,6 @@ one_shot = true
 
 [node name="IsDogingTimer" type="Timer" parent="Components/UserInputs"]
 one_shot = true
-
-[node name="ThirdPersonCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("3_j7sdg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28241, 0)
-userInputs = NodePath("../UserInputs")
 
 [node name="Stats" type="Node" parent="Components"]
 script = ExtResource("4_olk1m")
@@ -88,4 +78,6 @@ shape = SubResource("CylinderShape3D_ax26v")
 
 [node name="UiPortait" parent="Components" instance=ExtResource("6_j7sdg")]
 
-[editable path="Components/ThirdPersonCamera"]
+[node name="FPSCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("6_olk1m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+userInputs = NodePath("../UserInputs")

@@ -50,6 +50,8 @@ script = ExtResource("3_all22")
 [node name="Patrol" type="Node" parent="Components/BehaviorStateMachine"]
 script = ExtResource("3_mor54")
 
+[node name="PatrolPionts" type="Node" parent="Components/BehaviorStateMachine/Patrol"]
+
 [node name="waitTimer" type="Timer" parent="Components/BehaviorStateMachine/Patrol"]
 one_shot = true
 

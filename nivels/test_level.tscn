@@ -38,15 +38,15 @@ transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.525, -41)
 
 [node name="Patrol" parent="Actors/BaseEnemy/Components/BehaviorStateMachine" index="1"]
-patrolPointsPaths = Array[NodePath]([NodePath("PatrolPoint2"), NodePath("PatrolPoint3"), NodePath("PatrolPoint1")])
+patrolPointsPaths = Array[NodePath]([NodePath("PatrolPionts/PatrolPoint2"), NodePath("PatrolPionts/PatrolPoint3"), NodePath("PatrolPionts/PatrolPoint1")])
 
-[node name="PatrolPoint2" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol" index="1" instance=ExtResource("4_q7m5b")]
+[node name="PatrolPoint2" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="0" instance=ExtResource("4_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.0250001, -12)
 
-[node name="PatrolPoint3" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol" index="2" instance=ExtResource("4_q7m5b")]
+[node name="PatrolPoint3" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="1" instance=ExtResource("4_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0.0250001, -26)
 
-[node name="PatrolPoint1" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol" index="3" instance=ExtResource("4_q7m5b")]
+[node name="PatrolPoint1" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="2" instance=ExtResource("4_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, -25)
 
 [node name="Level" type="Node3D" parent="."]

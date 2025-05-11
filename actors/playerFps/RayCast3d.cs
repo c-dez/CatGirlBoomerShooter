@@ -14,12 +14,19 @@ public partial class RayCast3d : RayCast3D
         
         if (GetCollider() != null)
         {
-            BaseEnemy target = (BaseEnemy)GetCollider();
-            if (Input.IsActionJustPressed("mb1") )
+            if (GetCollider() is BaseEnemy enemy && Input.IsActionJustPressed("mb1"))
             {
+                BaseEnemy target = enemy;
                 target.Health -= stats.attackDamage;
-                GD.Print($"{target.Health} form {Name}");
+                GD.Print($"{target.Health} to  {target.Name}");
+
             }
+            // BaseEnemy target = (BaseEnemy)GetCollider();
+            // if (Input.IsActionJustPressed("mb1") )
+            // {
+            //     target.Health -= stats.attackDamage;
+            //     GD.Print($"{target.Health} to  {target.Name}");
+            // }
 
 
         }
