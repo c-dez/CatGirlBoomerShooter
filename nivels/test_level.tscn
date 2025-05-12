@@ -36,6 +36,7 @@ transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819
 
 [node name="BaseEnemy" parent="Actors" instance=ExtResource("2_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.525, -41)
+noticeRadius = 10.0
 
 [node name="Patrol" parent="Actors/BaseEnemy/Components/BehaviorStateMachine" index="1"]
 patrolPointsPaths = Array[NodePath]([NodePath("PatrolPionts/PatrolPoint2"), NodePath("PatrolPionts/PatrolPoint3"), NodePath("PatrolPionts/PatrolPoint1")])

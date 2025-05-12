@@ -4,10 +4,12 @@ using Godot;
 public partial class NavigationAgent3d : NavigationAgent3D
 {
     private BaseEnemy body;
+    VisionCone visionCone;
 
     public override void _Ready()
     {
         body = GetParent<Node>().GetParent<BaseEnemy>();
+        visionCone = GetNode<VisionCone>("../VisionCone");
 
     }
 
@@ -24,12 +26,19 @@ public partial class NavigationAgent3d : NavigationAgent3D
         body.Velocity = velocity;
 
         //look at direction
-        Vector3 targetDirection = new(direction.X, 0, direction.Z);
-        Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
-        float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
-        Vector3 rotation = body.Rotation;
-        rotation.Y = Mathf.RotateToward(body.Rotation.Y, targetAngle, delta * 6f);
-        body.Rotation = rotation;
+        //ESTA CAUSANDO CONFLICTO CON VisionCone LookAtPlayer()
+        // Vector3 targetDirection = new(direction.X, 0, direction.Z);
+        // Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
+        // float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
+        // Vector3 rotation = body.Rotation;
+        // rotation.Y = Mathf.RotateToward(body.Rotation.Y, targetAngle, delta * 6f);
+        // body.Rotation = rotation;
+
+        // PLACEHOLDER
+        if (!visionCone.canSeePlayer)
+        {
+            visionCone.LookAtDirection(direction,body,delta);
+        }
 
 
         body.MoveAndSlide();
