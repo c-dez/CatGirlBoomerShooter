@@ -64,14 +64,10 @@ namespace Actors.Enemies
                     // Posible problema al ver a otro CharacteBody3D
                     visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
 
-                    if (visionRayDetectsPlayer && visionAreaDetectsPlayer)
+                    canSeePlayer = visionAreaDetectsPlayer && visionRayDetectsPlayer;
+                    if (canSeePlayer)
                     {
-                        canSeePlayer = true;
                         LookAtDirection(direction, body, delta);
-
-                    }
-                    else{
-                        canSeePlayer = false;
                     }
                 }
             }
