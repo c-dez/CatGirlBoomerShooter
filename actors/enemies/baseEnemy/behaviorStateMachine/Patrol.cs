@@ -7,7 +7,7 @@ public partial class Patrol : Node
 
 
     [Export] NodePath[] patrolPointsPaths;
-    public List<PatrolPoint1> patrolPointsNodes = new();
+    public List<PatrolPoint1> patrolPointsNodes = [];
 
     public override void _Ready()
     {

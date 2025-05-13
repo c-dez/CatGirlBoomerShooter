@@ -9,11 +9,12 @@ namespace Actors.Enemies
     {
         RayCast3D visionRay;
         BaseEnemy body;
+        // targetPlayer se obtiene en CanSeePlayer() no confundir con referencia por node path
+        CharacterBody3D targetPlayer;
         bool visionAreaDetectsPlayer = false;
         bool visionRayDetectsPlayer = false;
         public bool canSeePlayer = false;
 
-        CharacterBody3D targetPlayer;
 
 
 
@@ -45,8 +46,8 @@ namespace Actors.Enemies
                 if (GetOverlappingBodies()[0].IsInGroup("Player"))
                 {
                     targetPlayer = (CharacterBody3D)GetOverlappingBodies()[0];
+
                     // Ray mira hacia:
-                    // uso mucho esta logica deberia hacerla funcion global
                     Vector3 direction = GetOverlappingBodies()[0].GlobalPosition + new Vector3(0, 1.0f, 0) - visionRay.GlobalPosition;
                     direction = direction.Normalized();
 
@@ -67,9 +68,10 @@ namespace Actors.Enemies
                     visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
 
                     canSeePlayer = visionAreaDetectsPlayer && visionRayDetectsPlayer;
+                    
                     if (canSeePlayer)
                     {
-                        LookAtDirection(direction, body, delta);
+                        LookAtTarget(direction, body, delta);
                     }
                 }
                 else
@@ -85,7 +87,7 @@ namespace Actors.Enemies
         {
             if (targetPlayer != null)
             {
-                var distance = body.GlobalPosition.DistanceTo(targetPlayer.GlobalPosition);
+                float distance = body.GlobalPosition.DistanceTo(targetPlayer.GlobalPosition);
                 return distance;
             }
             else
@@ -94,7 +96,7 @@ namespace Actors.Enemies
             }
 
         }
-        public void LookAtDirection(Vector3 direction, CharacterBody3D thisBody, float delta)
+        public void LookAtTarget(Vector3 direction, CharacterBody3D thisBody, float delta)
         {
             // esta public por que uso mucho esta logica
             Vector3 targetDirection = new(direction.X, 0, direction.Z);

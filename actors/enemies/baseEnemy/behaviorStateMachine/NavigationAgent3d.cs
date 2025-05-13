@@ -37,7 +37,7 @@ public partial class NavigationAgent3d : NavigationAgent3D
         // PLACEHOLDER
         if (!visionCone.canSeePlayer)
         {
-            visionCone.LookAtDirection(direction,body,delta);
+            visionCone.LookAtTarget(direction,body,delta);
         }
 
 
