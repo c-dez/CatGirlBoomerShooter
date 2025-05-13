@@ -13,6 +13,8 @@ namespace Actors.Enemies
         bool visionRayDetectsPlayer = false;
         public bool canSeePlayer = false;
 
+        CharacterBody3D targetPlayer;
+
 
 
         public override void _Ready()
@@ -33,7 +35,6 @@ namespace Actors.Enemies
             CanSeePlayer((float)delta);
 
 
-
         }
 
 
@@ -43,6 +44,7 @@ namespace Actors.Enemies
             {
                 if (GetOverlappingBodies()[0].IsInGroup("Player"))
                 {
+                    targetPlayer = (CharacterBody3D)GetOverlappingBodies()[0];
                     // Ray mira hacia:
                     // uso mucho esta logica deberia hacerla funcion global
                     Vector3 direction = GetOverlappingBodies()[0].GlobalPosition + new Vector3(0, 1.0f, 0) - visionRay.GlobalPosition;
@@ -70,10 +72,28 @@ namespace Actors.Enemies
                         LookAtDirection(direction, body, delta);
                     }
                 }
+                else
+                {
+                    targetPlayer = null;
+                }
             }
 
         }
 
+
+        public float GetDistanceToTargetPlayer()
+        {
+            if (targetPlayer != null)
+            {
+                var distance = body.GlobalPosition.DistanceTo(targetPlayer.GlobalPosition);
+                return distance;
+            }
+            else
+            {
+                return 0f;
+            }
+
+        }
         public void LookAtDirection(Vector3 direction, CharacterBody3D thisBody, float delta)
         {
             // esta public por que uso mucho esta logica

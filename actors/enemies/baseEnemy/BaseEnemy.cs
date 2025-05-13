@@ -66,7 +66,6 @@ namespace Actors.Enemies
                 case (int) BehaviorStateMachine.Behavior_State.chase:
                     nav.NavigateTo((float)delta,player.GlobalPosition, speed);
                     break;
-
                 default:
                     GD.PrintErr($"No State in {Name}  behaviorStateMachine switch");
                     break;
