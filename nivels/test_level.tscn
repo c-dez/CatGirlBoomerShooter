@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dtewbija3dquh"]
+[gd_scene load_steps=7 format=3 uid="uid://dtewbija3dquh"]
 
 [ext_resource type="PackedScene" uid="uid://bw2qu222mlyi4" path="res://actors/playerFps/PlayerFps.tscn" id="1_mso0s"]
 [ext_resource type="PackedScene" uid="uid://di3i83c1pj8jm" path="res://actors/enemies/baseEnemy/base_enemy.tscn" id="2_q7m5b"]
 [ext_resource type="PackedScene" uid="uid://dv0mulynf4pkn" path="res://nivels/level1_test.tscn" id="3_5je5d"]
-[ext_resource type="PackedScene" uid="uid://g28mfe0kwbhc" path="res://nivels/patrol_point_1.tscn" id="4_q7m5b"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mso0s"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -19,15 +18,6 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="TestLevel" type="Node3D"]
-
-[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint2" parent="." instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.0250001, -12)
-
-[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint3" parent="." instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0.0250001, -26)
-
-[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint1" parent="." instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, -25)
 
 [node name="Envirroment" type="Node" parent="."]
 

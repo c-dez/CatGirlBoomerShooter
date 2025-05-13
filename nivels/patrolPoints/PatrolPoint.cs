@@ -1,7 +1,6 @@
 using Godot;
-using Actors.Enemies;
 
-public partial class PatrolPoint1 : Node3D
+public partial class PatrolPoint : Node3D
 {
     public MeshInstance3D mesh;
     public Area3D area;
