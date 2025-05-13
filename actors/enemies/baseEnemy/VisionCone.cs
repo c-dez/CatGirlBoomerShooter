@@ -8,6 +8,7 @@ namespace Actors.Enemies
     {
         public CharacterBody3D targetPlayer;
         public bool canSeePlayer = false;
+        public Vector3 lastPlayerPosition = Vector3.Zero;
 
         RayCast3D visionRay;
         BaseEnemy body;
@@ -31,7 +32,7 @@ namespace Actors.Enemies
             //visionRay es top level para que tenga rotacion independiente en x(horizontal), y para que su posicion global dea igual a la de su padre:
             visionRay.GlobalPosition = GlobalPosition;
             CanSeePlayer((float)delta);
-
+            GetLastPlayerPosition();
 
         }
 
@@ -60,6 +61,14 @@ namespace Actors.Enemies
             Vector3 rotation = body.Rotation;
             rotation.Y = Mathf.RotateToward(body.Rotation.Y, targetAngle, delta * 6f);
             body.Rotation = rotation;
+        }
+
+        void GetLastPlayerPosition()
+        {
+            if (targetPlayer != null)
+            {
+                lastPlayerPosition = targetPlayer.GlobalPosition;
+            }
         }
 
 
@@ -98,10 +107,10 @@ namespace Actors.Enemies
                     //         LookAtTarget(direction, body, delta);
                     //     }
                 }
-                else
-                {
-                    targetPlayer = null;
-                }
+            }
+            else
+            {
+                targetPlayer = null;
             }
         }
 
@@ -124,7 +133,7 @@ namespace Actors.Enemies
 
         }
 
-        
+
     }
 
 }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://di3i83c1pj8jm"]
+[gd_scene load_steps=10 format=3 uid="uid://di3i83c1pj8jm"]
 
 [ext_resource type="Script" uid="uid://ckw385qysc2tn" path="res://actors/enemies/baseEnemy/BaseEnemy.cs" id="1_ycvn3"]
 [ext_resource type="Script" uid="uid://uquqy46nygty" path="res://actors/enemies/baseEnemy/behaviorStateMachine/Navigation.cs" id="2_vh70f"]
 [ext_resource type="Texture2D" uid="uid://djjdx7trlxwg6" path="res://cute__catgirl__military__revolver_S3097673113_St25_G7.5.jpeg" id="3_in30a"]
+[ext_resource type="Script" uid="uid://dlipk3vhalyfa" path="res://actors/enemies/baseEnemy/Logic.cs" id="5_eiuyy"]
 [ext_resource type="Script" uid="uid://efqww07fssmg" path="res://actors/enemies/baseEnemy/VisionCone.cs" id="6_vh70f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aw7eb"]
@@ -64,5 +65,8 @@ top_level = true
 target_position = Vector3(0, 0, 15)
 collision_mask = 3
 debug_shape_custom_color = Color(0, 0.603922, 0, 1)
+
+[node name="Logic" type="Node" parent="Components"]
+script = ExtResource("5_eiuyy")
 
 [connection signal="body_entered" from="Components/VisionCone" to="Components/VisionCone" method="_on_body_entered"]
