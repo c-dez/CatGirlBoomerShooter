@@ -4,12 +4,12 @@ using Godot;
 public partial class Navigation : NavigationAgent3D
 {
     private BaseEnemy body;
-    VisionCone visionCone;
+    // VisionCone visionCone;
 
     public override void _Ready()
     {
         body = GetParent<Node>().GetParent<BaseEnemy>();
-        visionCone = GetNode<VisionCone>("../VisionCone");
+        // visionCone = GetNode<VisionCone>("../VisionCone");
 
     }
 
@@ -35,10 +35,10 @@ public partial class Navigation : NavigationAgent3D
         // body.Rotation = rotation;
 
         // PLACEHOLDER
-        if (!visionCone.canSeePlayer)
-        {
-            visionCone.LookAtTarget(direction,body,delta);
-        }
+        // if (!visionCone.canSeePlayer)
+        // {
+        //     visionCone.LookAtTarget(direction,body,delta);
+        // }
 
 
         body.MoveAndSlide();

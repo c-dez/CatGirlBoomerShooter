@@ -13,7 +13,7 @@ radius = 1.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_24atw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eiuyy"]
-size = Vector3(20, 10, 9.73)
+size = Vector3(20, 10, 10)
 
 [node name="BaseEnemy" type="CharacterBody3D"]
 collision_layer = 4
@@ -56,12 +56,13 @@ monitorable = false
 script = ExtResource("6_vh70f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/VisionCone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6.29001)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5.2215)
 shape = SubResource("BoxShape3D_eiuyy")
 
 [node name="VisionRay" type="RayCast3D" parent="Components/VisionCone"]
 top_level = true
 target_position = Vector3(0, 0, 15)
 collision_mask = 3
+debug_shape_custom_color = Color(0, 0.603922, 0, 1)
 
 [connection signal="body_entered" from="Components/VisionCone" to="Components/VisionCone" method="_on_body_entered"]

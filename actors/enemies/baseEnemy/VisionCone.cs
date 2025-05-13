@@ -1,4 +1,3 @@
-// using Actors.Enemies;
 using Godot;
 namespace Actors.Enemies
 {
@@ -7,15 +6,13 @@ namespace Actors.Enemies
     // si visionAreaDetectsPlayer && visionRayDetectsPlayer == true, "esta mirando"
     public partial class VisionCone : Area3D
     {
-        RayCast3D visionRay;
-        BaseEnemy body;
-        // targetPlayer se obtiene en CanSeePlayer() no confundir con referencia por node path
-        CharacterBody3D targetPlayer;
-        bool visionAreaDetectsPlayer = false;
-        bool visionRayDetectsPlayer = false;
+        public CharacterBody3D targetPlayer;
         public bool canSeePlayer = false;
 
-
+        RayCast3D visionRay;
+        BaseEnemy body;
+        bool visionAreaDetectsPlayer = false;
+        bool visionRayDetectsPlayer = false;
 
 
         public override void _Ready()
@@ -36,6 +33,33 @@ namespace Actors.Enemies
             CanSeePlayer((float)delta);
 
 
+        }
+
+
+        public float GetDistanceToTargetPlayer()
+        {
+            if (targetPlayer != null)
+            {
+                float distance = body.GlobalPosition.DistanceTo(targetPlayer.GlobalPosition);
+                return distance;
+            }
+            else
+            {
+                return 0f;
+            }
+
+        }
+
+
+        public void LookAtDirection(Vector3 direction, float delta)
+        {
+            // esta public por que uso mucho esta logica
+            Vector3 targetDirection = new(direction.X, 0, direction.Z);
+            Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
+            float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
+            Vector3 rotation = body.Rotation;
+            rotation.Y = Mathf.RotateToward(body.Rotation.Y, targetAngle, delta * 6f);
+            body.Rotation = rotation;
         }
 
 
@@ -68,45 +92,18 @@ namespace Actors.Enemies
                     visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
 
                     canSeePlayer = visionAreaDetectsPlayer && visionRayDetectsPlayer;
-                    
-                    if (canSeePlayer)
-                    {
-                        LookAtTarget(direction, body, delta);
-                    }
+
+                    //     if (canSeePlayer)
+                    //     {
+                    //         LookAtTarget(direction, body, delta);
+                    //     }
                 }
                 else
                 {
                     targetPlayer = null;
                 }
             }
-
         }
-
-
-        public float GetDistanceToTargetPlayer()
-        {
-            if (targetPlayer != null)
-            {
-                float distance = body.GlobalPosition.DistanceTo(targetPlayer.GlobalPosition);
-                return distance;
-            }
-            else
-            {
-                return 0f;
-            }
-
-        }
-        public void LookAtTarget(Vector3 direction, CharacterBody3D thisBody, float delta)
-        {
-            // esta public por que uso mucho esta logica
-            Vector3 targetDirection = new(direction.X, 0, direction.Z);
-            Vector2 targetVector2 = new(targetDirection.X, targetDirection.Z);
-            float targetAngle = -targetVector2.Angle() + Mathf.Pi / 2;
-            Vector3 rotation = thisBody.Rotation;
-            rotation.Y = Mathf.RotateToward(thisBody.Rotation.Y, targetAngle, delta * 6f);
-            thisBody.Rotation = rotation;
-        }
-
 
 
         void OnPlayerEnteredArea(Node3D body)
@@ -116,6 +113,8 @@ namespace Actors.Enemies
                 visionAreaDetectsPlayer = true;
             }
         }
+
+
         void OnPlayerExitedArea(Node3D body)
         {
             if (body.IsInGroup("Player"))
@@ -124,6 +123,8 @@ namespace Actors.Enemies
             }
 
         }
+
+        
     }
 
 }
