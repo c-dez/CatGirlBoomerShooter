@@ -21,9 +21,6 @@ namespace Actors.Enemies
         private Node3D skin;
 
         //navigation
-        private NavigationAgent3d nav;
-        private BehaviorStateMachine behaviorStateMachine;
-        private Patrol patrol;
         private Area3D areaDetectPatrolPoints;
 
         private int patrolPointsNodesIndex = 0;
@@ -34,17 +31,11 @@ namespace Actors.Enemies
         {
             player = (CharacterBody3D)GetTree().GetFirstNodeInGroup("Player");
             skin = GetNode<Node3D>("Components/Skin");
-            nav = GetNode<NavigationAgent3d>("Components/NavigationAgent3D");
-            behaviorStateMachine = GetNode<BehaviorStateMachine>("Components/BehaviorStateMachine");
-            patrol = GetNode<Patrol>("Components/BehaviorStateMachine/Patrol");
             areaDetectPatrolPoints = GetNode<Area3D>("Components/AreaDetectPatrolPoints");
             //signal
-            areaDetectPatrolPoints.AreaEntered += OnAreaEntered;
-            behaviorStateMachine.state = (int)BehaviorStateMachine.Behavior_State.idle;
 
 
 
-            Debugg();
 
         }
 
@@ -55,29 +46,10 @@ namespace Actors.Enemies
             Gravity();
             OnDead();
             // Mover a funcion cuando este lista
-            switch (behaviorStateMachine.state)
-            {
-                case (int)BehaviorStateMachine.Behavior_State.idle:
-                    nav.NavigateTo((float)delta, GlobalPosition, 0f);
-                    break;
-                case (int)BehaviorStateMachine.Behavior_State.patroling:
-                    nav.NavigateTo((float)delta, patrol.patrolPointsNodes[patrolPointsNodesIndex].GlobalPosition, walkSpeed);
-                    break;
-                case (int) BehaviorStateMachine.Behavior_State.chase:
-                    nav.NavigateTo((float)delta,player.GlobalPosition, speed);
-                    break;
-                default:
-                    GD.PrintErr($"No State in {Name}  behaviorStateMachine switch");
-                    break;
-            }
+         
         }
 
-        public void OnAreaEntered(Node3D body)
-        {
-            patrolPointsNodesIndex += 1;
-            if (patrolPointsNodesIndex == patrol.patrolPointsNodes.Count)
-            patrolPointsNodesIndex = 0;
-        }
+       
 
 
         private void Gravity()
@@ -120,15 +92,7 @@ namespace Actors.Enemies
         }
 
 
-        private void Debugg()
-        {
-
-            if (patrol.patrolPointsNodes == null)
-            {
-                GD.PrintErr($"{Name} patrol/points are null {patrol.GetPath()}");
-
-            }
-        }
+       
 
     }
 }

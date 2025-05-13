@@ -1,7 +1,7 @@
 using Actors.Enemies;
 using Godot;
 
-public partial class NavigationAgent3d : NavigationAgent3D
+public partial class Navigation : NavigationAgent3D
 {
     private BaseEnemy body;
     VisionCone visionCone;

@@ -20,6 +20,15 @@ glow_enabled = true
 
 [node name="TestLevel" type="Node3D"]
 
+[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint2" parent="." instance=ExtResource("4_q7m5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.0250001, -12)
+
+[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint3" parent="." instance=ExtResource("4_q7m5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0.0250001, -26)
+
+[node name="Actors_BaseEnemy_Components_BehaviorStateMachine_Patrol_PatrolPionts#PatrolPoint1" parent="." instance=ExtResource("4_q7m5b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, -25)
+
 [node name="Envirroment" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Envirroment"]
@@ -37,23 +46,9 @@ transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819
 [node name="BaseEnemy" parent="Actors" instance=ExtResource("2_q7m5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.525, -41)
 
-[node name="Patrol" parent="Actors/BaseEnemy/Components/BehaviorStateMachine" index="1"]
-patrolPointsPaths = Array[NodePath]([NodePath("PatrolPionts/PatrolPoint2"), NodePath("PatrolPionts/PatrolPoint3"), NodePath("PatrolPionts/PatrolPoint1")])
-
-[node name="PatrolPoint2" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="0" instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.0250001, -12)
-
-[node name="PatrolPoint3" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="1" instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0.0250001, -26)
-
-[node name="PatrolPoint1" parent="Actors/BaseEnemy/Components/BehaviorStateMachine/Patrol/PatrolPionts" index="2" instance=ExtResource("4_q7m5b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, -25)
-
 [node name="Level" type="Node3D" parent="."]
 
 [node name="GridMap" type="GridMap" parent="Level"]
 cell_size = Vector3(1, 1, 1)
 
 [node name="TenchuLevel1" parent="Level/GridMap" instance=ExtResource("3_5je5d")]
-
-[editable path="Actors/BaseEnemy"]
