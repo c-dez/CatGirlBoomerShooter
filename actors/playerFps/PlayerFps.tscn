@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bw2qu222mlyi4"]
+[gd_scene load_steps=11 format=3 uid="uid://bw2qu222mlyi4"]
 
 [ext_resource type="Script" uid="uid://pk4y6ed4tlka" path="res://actors/playerFps/UserInputs.cs" id="1_5s81b"]
 [ext_resource type="PackedScene" uid="uid://buswndoyp4rd6" path="res://actors/playerFps/CrossHair.tscn" id="1_32gnp"]
 [ext_resource type="Script" uid="uid://cm0ojkbr7latt" path="res://actors/playerFps/Move.cs" id="3_32gnp"]
 [ext_resource type="Script" uid="uid://b830qn3gsedyq" path="res://actors/playerFps/Stats.cs" id="4_olk1m"]
-[ext_resource type="PackedScene" uid="uid://01qibbvkgdqi" path="res://actors/playerFps/third_person_camera.tscn" id="5_32gnp"]
+[ext_resource type="Script" uid="uid://c2lg14nepdygx" path="res://actors/playerFps/Camera.cs" id="5_j7sdg"]
+[ext_resource type="Script" uid="uid://dl1plyvy0wp1n" path="res://actors/playerFps/RayCast3d.cs" id="6_olk1m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6uhly"]
 
@@ -13,6 +14,8 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ax26v"]
 height = 1.0
 radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3hfph"]
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_layer = 2
@@ -75,6 +78,20 @@ shape = SubResource("CylinderShape3D_ax26v")
 
 [node name="CrossHair" parent="Components" instance=ExtResource("1_32gnp")]
 
-[node name="ThirdPersonCamera" parent="Components" node_paths=PackedStringArray("userInputs") instance=ExtResource("5_32gnp")]
+[node name="ThirdPersonCamera" type="Node3D" parent="Components" node_paths=PackedStringArray("userInputs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+script = ExtResource("5_j7sdg")
 userInputs = NodePath("../UserInputs")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Components/ThirdPersonCamera"]
+shape = SubResource("SphereShape3D_3hfph")
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="Components/ThirdPersonCamera/SpringArm3D"]
+
+[node name="RayCast3D" type="RayCast3D" parent="Components/ThirdPersonCamera/SpringArm3D/Camera3D" node_paths=PackedStringArray("stats")]
+target_position = Vector3(0, 0, -50)
+collision_mask = 5
+debug_shape_custom_color = Color(0.580094, 0.423204, 0.764357, 1)
+script = ExtResource("6_olk1m")
+stats = NodePath("../../../../Stats")

@@ -3,7 +3,7 @@ namespace Actors.Players
 {
     public partial class UserInputs : Node
     {
-        [Export] Node3D Camera;
+        [Export] Camera Camera;
         [Export] float IsDogingTime = 0.25f;
         [Export] float DodgeKeyBufferTime = 0.3f;
         CharacterBody3D Player;
@@ -35,18 +35,9 @@ namespace Actors.Players
             JumpKeyBuffer();
             DodgeKeyBuffer();
             DoDodge();
+            Camera.spring.SpringLength = Input.IsActionPressed("mb2")? -1f: 5f;
 
-            //debug
-            // if (dodgeTimer.TimeLeft > 0)
-            // {
-            //     frames++;
-
-            // }
-            // if (dodgeTimer.TimeLeft == 0 && frames > 0)
-            // {
-            //     GD.Print($"Dodge frames {frames}");
-            //     frames = 0;
-            // }
+           
         }
 
 
@@ -89,9 +80,8 @@ namespace Actors.Players
 
         void DodgeKeyBuffer()
         {
-            // ATENCION Cambiado "shift" a "mb1" para testing
             // ATENCION DodgeKeyBufferTime tiene que ser menor que IsDogingTime si no causa errores de logica y se dispara 2 veces dodge al seguir introduciendo input de movimiento
-            if (Input.IsActionJustPressed("mb2") )
+            if (Input.IsActionJustPressed("shift") )
             {
                 DodgeKeyTimerBufferNode.Start(DodgeKeyBufferTime);
             }

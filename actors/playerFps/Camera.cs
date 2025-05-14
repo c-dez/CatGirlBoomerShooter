@@ -8,11 +8,13 @@ namespace Actors.Players
         [Export] private float clampUp = 50f;
         [Export] private float clampDown = -80f;
         private Vector2 cameraInputDirection = Vector2.Zero;
+        public SpringArm3D spring;
 
 
         public override void _Ready()
         {
             Input.MouseMode = Input.MouseModeEnum.Captured;
+            spring = GetNode<SpringArm3D>("SpringArm3D");
         }
 
         public override void _UnhandledInput(InputEvent @event)
