@@ -69,9 +69,9 @@ namespace Actors.Enemies
         void SetCurrentAndLastState(int behaviorState)
         {
             // en un array guardo el state actual y pasado, en esta funcion se usa para hacer el cambio de state y se encarga de la logica para almacenar el lastState
-            int _newState = behaviorState;
+            int newState = behaviorState;
             currentAndLastState[1] = currentAndLastState[0];
-            currentAndLastState[0] = _newState;
+            currentAndLastState[0] = newState;
         }
 
 

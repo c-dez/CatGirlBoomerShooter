@@ -106,7 +106,8 @@ namespace Actors.Players
             {
                 if (moveDirection.Length() > 0.2f && lastMoveDirection == Vector3.Zero)
                 {
-                    // Movimiento normal
+                    // si userInputs.lastMoveDirection es zero, significa que los inputs de el usuario son usados
+                    // si no es zero, significa que los inputs de usuario son ignorados
                     velocity.X = moveDirection.X * speed;
                     velocity.Z = moveDirection.Z * speed;
                     if (player.IsOnFloor())
