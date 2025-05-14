@@ -9,11 +9,15 @@ namespace Actors.Enemies
         public CharacterBody3D targetPlayer;
         public bool canSeePlayer = false;
         public Vector3 lastPlayerPosition = Vector3.Zero;
+        [Signal] public delegate void OnPlayerSightEnterEventHandler(CharacterBody3D player);
+        // public delegate void OnPlayerSightExited();
+        bool hasEmitedOnPlayerSightEnter = false;
+
 
         RayCast3D visionRay;
         BaseEnemy body;
-        bool visionAreaDetectsPlayer = false;
-        bool visionRayDetectsPlayer = false;
+        public bool visionAreaDetectsPlayer = false;
+        public bool visionRayDetectsPlayer = false;
 
 
         public override void _Ready()
@@ -34,7 +38,11 @@ namespace Actors.Enemies
             CanSeePlayer((float)delta);
             GetLastPlayerPosition();
 
+
+
         }
+
+
 
 
         public float GetDistanceToTargetPlayer()
@@ -101,16 +109,22 @@ namespace Actors.Enemies
                     visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
 
                     canSeePlayer = visionAreaDetectsPlayer && visionRayDetectsPlayer;
+                    if (!hasEmitedOnPlayerSightEnter && canSeePlayer)
+                    {
+                        EmitSignal(SignalName.OnPlayerSightEnter, targetPlayer);
+                        hasEmitedOnPlayerSightEnter = true;
 
-                    //     if (canSeePlayer)
-                    //     {
-                    //         LookAtTarget(direction, body, delta);
-                    //     }
+                    }
+                    
                 }
             }
             else
             {
                 targetPlayer = null;
+                if (hasEmitedOnPlayerSightEnter)
+                {
+                    hasEmitedOnPlayerSightEnter = false;
+                }
             }
         }
 

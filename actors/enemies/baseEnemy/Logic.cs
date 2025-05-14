@@ -1,3 +1,4 @@
+using System;
 using Godot;
 namespace Actors.Enemies
 {
@@ -8,9 +9,10 @@ namespace Actors.Enemies
         Node3D skin;
         Navigation nav;
         int state = 0;
+        int[] currentAndLastState = new int[2];
 
-        // debug
-        Label stateMachineLabel;
+         // debug
+         Label stateMachineLabel;
 
         enum BehaviorStateMachine
         {
@@ -19,6 +21,7 @@ namespace Actors.Enemies
             investigate,
             chase,
         }
+
 
 
         public override void _Ready()
@@ -30,6 +33,12 @@ namespace Actors.Enemies
 
             //debug
             stateMachineLabel = GetNode<Label>("StateMachineLabel");
+            //signals
+            visionCone.BodyEntered += OnBodyEntered;
+            visionCone.BodyExited += OnBodyExited;
+
+            // visionCone.Connect("OnPlayerSightEnter", new Callable(this, nameof(OnTest))); 
+            visionCone.OnPlayerSightEnter += OnPlayerOnSight;
 
 
         }
@@ -37,12 +46,42 @@ namespace Actors.Enemies
         public override void _PhysicsProcess(double delta)
         {
             StateLabel();
+
+            if (visionCone.canSeePlayer)
+            {
+                // lastState = state;
+                state = (int)BehaviorStateMachine.chase;
+                // moverse a pos de player
+            }
+            GD.Print($"current {currentAndLastState[0]} last {currentAndLastState[1]}");
+
+
         }
+
+
+        void OnPlayerOnSight(CharacterBody3D player)
+        {
+            int lastState = state;
+            currentAndLastState[1] = lastState;
+            state = (int)BehaviorStateMachine.chase;
+            int newState = state;
+            currentAndLastState[0] = newState;
+
+        }
+        void OnBodyEntered(Node3D body)
+        {
+
+        }
+        void OnBodyExited(Node3D body)
+        {
+
+        }
+
 
 
         void StateLabel()
         {
-            stateMachineLabel.Text = state switch
+            string currentState = currentAndLastState[0] switch
             {
                 (int)BehaviorStateMachine.idle => "idle",
                 (int)BehaviorStateMachine.patroling => "patroling",
@@ -50,6 +89,15 @@ namespace Actors.Enemies
                 (int)BehaviorStateMachine.chase => "chase",
                 _ => "no state",
             };
+            string _lastState = currentAndLastState[1] switch
+            {
+                (int)BehaviorStateMachine.idle => "idle",
+                (int)BehaviorStateMachine.patroling => "patroling",
+                (int)BehaviorStateMachine.investigate => "investigate",
+                (int)BehaviorStateMachine.chase => "chase",
+                _ => "no state",
+            };
+            stateMachineLabel.Text = $"current State: {currentState}\nlastState: {_lastState}";
         }
     }
 
