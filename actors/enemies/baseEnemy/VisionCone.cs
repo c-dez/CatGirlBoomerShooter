@@ -9,15 +9,17 @@ namespace Actors.Enemies
         public CharacterBody3D targetPlayer;
         public bool canSeePlayer = false;
         public Vector3 lastPlayerPosition = Vector3.Zero;
-        [Signal] public delegate void OnPlayerSightEnterEventHandler(CharacterBody3D player);
-        // public delegate void OnPlayerSightExited();
+        [Signal] public delegate void OnPlayerSightEnterEventHandler();
         bool hasEmitedOnPlayerSightEnter = false;
+        [Signal] public delegate void OnPlayerSightExitedEventHandler();
+        bool hasEmitedOnPlayerSightExited = false;
 
 
         RayCast3D visionRay;
         BaseEnemy body;
         public bool visionAreaDetectsPlayer = false;
         public bool visionRayDetectsPlayer = false;
+
 
 
         public override void _Ready()
@@ -35,14 +37,13 @@ namespace Actors.Enemies
         {
             //visionRay es top level para que tenga rotacion independiente en x(horizontal), y para que su posicion global dea igual a la de su padre:
             visionRay.GlobalPosition = GlobalPosition;
-            CanSeePlayer((float)delta);
-            GetLastPlayerPosition();
+            AreaCanSeePlayer((float)delta);
 
-
-
+            if (!visionAreaDetectsPlayer || !visionRayDetectsPlayer)
+            {
+                hasEmitedOnPlayerSightEnter = false;
+            }
         }
-
-
 
 
         public float GetDistanceToTargetPlayer()
@@ -56,7 +57,6 @@ namespace Actors.Enemies
             {
                 return 0f;
             }
-
         }
 
 
@@ -80,7 +80,7 @@ namespace Actors.Enemies
         }
 
 
-        void CanSeePlayer(float delta)
+        void AreaCanSeePlayer(float delta)
         {
             if (HasOverlappingBodies())
             {
@@ -105,25 +105,31 @@ namespace Actors.Enemies
                     // // aplicar rotacion
                     visionRay.Rotation = new Vector3(newX, newY, 0);
 
-                    // Posible problema al ver a otro CharacteBody3D
+                    // Posible problema al ver a otro CharacteBody3D deberia se clase "Player"
                     visionRayDetectsPlayer = visionRay.GetCollider() is CharacterBody3D;
 
                     canSeePlayer = visionAreaDetectsPlayer && visionRayDetectsPlayer;
+
+                    // emit signal
                     if (!hasEmitedOnPlayerSightEnter && canSeePlayer)
                     {
-                        EmitSignal(SignalName.OnPlayerSightEnter, targetPlayer);
+                        EmitSignal(SignalName.OnPlayerSightEnter);
                         hasEmitedOnPlayerSightEnter = true;
-
                     }
-                    
+
+                    if (canSeePlayer)
+                    {
+                        lastPlayerPosition = targetPlayer.GlobalPosition;
+                    }
                 }
             }
             else
             {
                 targetPlayer = null;
-                if (hasEmitedOnPlayerSightEnter)
+
+                if (hasEmitedOnPlayerSightExited)
                 {
-                    hasEmitedOnPlayerSightEnter = false;
+                    hasEmitedOnPlayerSightExited = false;
                 }
             }
         }
@@ -143,8 +149,8 @@ namespace Actors.Enemies
             if (body.IsInGroup("Player"))
             {
                 visionAreaDetectsPlayer = false;
+                EmitSignal(SignalName.OnPlayerSightExited);
             }
-
         }
 
 

@@ -9,7 +9,7 @@ namespace Actors.Enemies
 
         [ExportGroup("Base Stats")]
         [Export] public int Health = 100;
-        [Export] private float speed = 5.0f;
+        [Export] public float speed = 5.0f;
         [Export] public float walkSpeed = 2.0f;
         [Export] private int attackDamage = 5;
 
@@ -24,7 +24,6 @@ namespace Actors.Enemies
         private Area3D areaDetectPatrolPoints;
 
         private int patrolPointsNodesIndex = 0;
-        // private BehaviorStateMachine behaviorStateMachide;
 
 
         public override void _Ready()
@@ -32,21 +31,14 @@ namespace Actors.Enemies
             player = (CharacterBody3D)GetTree().GetFirstNodeInGroup("Player");
             skin = GetNode<Node3D>("Components/Skin");
             areaDetectPatrolPoints = GetNode<Area3D>("Components/AreaDetectPatrolPoints");
-            //signal
-
-
-
 
         }
 
 
         public override void _PhysicsProcess(double delta)
         {
-
             Gravity();
             OnDead();
-            // Mover a funcion cuando este lista
-         
         }
 
        

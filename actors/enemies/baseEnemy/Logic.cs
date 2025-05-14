@@ -8,13 +8,12 @@ namespace Actors.Enemies
         VisionCone visionCone;
         Node3D skin;
         Navigation nav;
-        int state = 0;
         int[] currentAndLastState = new int[2];
 
-         // debug
-         Label stateMachineLabel;
+        // debug
+        Label stateMachineLabel;
 
-        enum BehaviorStateMachine
+        enum BehaviorState
         {
             idle,
             patroling,
@@ -33,68 +32,68 @@ namespace Actors.Enemies
 
             //debug
             stateMachineLabel = GetNode<Label>("StateMachineLabel");
+            
             //signals
-            visionCone.BodyEntered += OnBodyEntered;
-            visionCone.BodyExited += OnBodyExited;
-
-            // visionCone.Connect("OnPlayerSightEnter", new Callable(this, nameof(OnTest))); 
-            visionCone.OnPlayerSightEnter += OnPlayerOnSight;
-
+            visionCone.OnPlayerSightEnter += OnPlayerOnSightEnter;
+            visionCone.OnPlayerSightExited += OnPlayerOnSightExited;
 
         }
+
 
         public override void _PhysicsProcess(double delta)
         {
+            float dt = (float)delta;
             StateLabel();
-
-            if (visionCone.canSeePlayer)
+            if (currentAndLastState[0] == (int)BehaviorState.chase)
             {
-                // lastState = state;
-                state = (int)BehaviorStateMachine.chase;
-                // moverse a pos de player
+                nav.NavigateTo(dt, visionCone.targetPlayer.GlobalPosition, body.speed);
             }
-            GD.Print($"current {currentAndLastState[0]} last {currentAndLastState[1]}");
-
-
+            else if (currentAndLastState[0] == (int)BehaviorState.investigate)
+            {
+                nav.NavigateTo(dt,visionCone.lastPlayerPosition , body.walkSpeed);
+            }
         }
 
 
-        void OnPlayerOnSight(CharacterBody3D player)
+        void OnPlayerOnSightEnter()
         {
-            int lastState = state;
-            currentAndLastState[1] = lastState;
-            state = (int)BehaviorStateMachine.chase;
-            int newState = state;
-            currentAndLastState[0] = newState;
-
+            SetCurrentAndLastState((int)BehaviorState.chase);
         }
-        void OnBodyEntered(Node3D body)
+
+
+        void OnPlayerOnSightExited()
         {
-
+            SetCurrentAndLastState((int)BehaviorState.investigate);   
         }
-        void OnBodyExited(Node3D body)
+
+        void SetCurrentAndLastState(int behaviorState)
         {
-
+            // en un array guardo el state actual y pasado, en esta funcion se usa para hacer el cambio de state y se encarga de la logica para almacenar el lastState
+            int _newState = behaviorState;
+            currentAndLastState[1] = currentAndLastState[0];
+            currentAndLastState[0] = _newState;
         }
+
 
 
 
         void StateLabel()
         {
+            // para Debugg
             string currentState = currentAndLastState[0] switch
             {
-                (int)BehaviorStateMachine.idle => "idle",
-                (int)BehaviorStateMachine.patroling => "patroling",
-                (int)BehaviorStateMachine.investigate => "investigate",
-                (int)BehaviorStateMachine.chase => "chase",
+                (int)BehaviorState.idle => "idle",
+                (int)BehaviorState.patroling => "patroling",
+                (int)BehaviorState.investigate => "investigate",
+                (int)BehaviorState.chase => "chase",
                 _ => "no state",
             };
             string _lastState = currentAndLastState[1] switch
             {
-                (int)BehaviorStateMachine.idle => "idle",
-                (int)BehaviorStateMachine.patroling => "patroling",
-                (int)BehaviorStateMachine.investigate => "investigate",
-                (int)BehaviorStateMachine.chase => "chase",
+                (int)BehaviorState.idle => "idle",
+                (int)BehaviorState.patroling => "patroling",
+                (int)BehaviorState.investigate => "investigate",
+                (int)BehaviorState.chase => "chase",
                 _ => "no state",
             };
             stateMachineLabel.Text = $"current State: {currentState}\nlastState: {_lastState}";
