@@ -45,11 +45,12 @@ jumpTimeToDecend = 0.5
 wallJumpForce = 5.0
 DodgeSpeed = 15.0
 
-[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera")]
+[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera", "crossHair")]
 script = ExtResource("1_5s81b")
 Camera = NodePath("../ThirdPersonCamera")
 IsDogingTime = 0.2
 DodgeKeyBufferTime = 0.2
+crossHair = NodePath("../CrossHair")
 
 [node name="JumpKeyBufferTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25

@@ -6,6 +6,7 @@ namespace Actors.Players
         [Export] Camera Camera;
         [Export] float IsDogingTime = 0.25f;
         [Export] float DodgeKeyBufferTime = 0.3f;
+        [Export] CanvasLayer crossHair;
         CharacterBody3D Player;
         Timer JumpKeyBufferTimerNode;
         Timer DodgeKeyTimerBufferNode;
@@ -36,6 +37,7 @@ namespace Actors.Players
             DodgeKeyBuffer();
             DoDodge();
             Camera.spring.SpringLength = Input.IsActionPressed("mb2")? -1f: 5f;
+            crossHair.Visible = Input.IsActionPressed("mb2");
 
            
         }
