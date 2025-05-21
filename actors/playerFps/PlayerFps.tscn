@@ -103,11 +103,13 @@ spring_length = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="Components/ThirdPersonCamera/SpringArm3D"]
 
-[node name="RayCast3D" type="RayCast3D" parent="Components/ThirdPersonCamera/SpringArm3D/Camera3D"]
+[node name="RayCast3D" type="RayCast3D" parent="Components/ThirdPersonCamera/SpringArm3D/Camera3D" node_paths=PackedStringArray("playerStats", "stateMachine")]
 target_position = Vector3(0, 0, -50)
 collision_mask = 5
 debug_shape_custom_color = Color(0.580094, 0.423204, 0.764357, 1)
 script = ExtResource("6_olk1m")
+playerStats = NodePath("../../../../Stats")
+stateMachine = NodePath("../../../../StateMachine")
 
 [node name="StateMachine" type="Node" parent="Components"]
 script = ExtResource("7_olk1m")

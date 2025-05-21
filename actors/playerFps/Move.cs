@@ -92,6 +92,12 @@ namespace Actors.Players
         }
 
 
+        void GrappigHook()
+        {
+            
+        }
+
+
         void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 userInputsLastMoveDirection)
         {
             if (player.IsOnFloor())
@@ -143,7 +149,7 @@ namespace Actors.Players
         }
 
 
-        void Jump(Vector3 velocity, float _delta)
+        void Jump(Vector3 velocity, float delta)
         {
             if (userInputs.JumpKeyPressed && (coyoteTimeCounter > 0.01f))
             {
@@ -157,15 +163,15 @@ namespace Actors.Players
                 // moveStateMachine.Travel("falling");
                 if (velocity.Y < 0.0f)
                 {
-                    velocity.Y += fallGravity * _delta;
+                    velocity.Y += fallGravity * delta;
                 }
                 else
                 {
-                    velocity.Y += jumpGravity * _delta;
+                    velocity.Y += jumpGravity * delta;
                 }
             }
             // coyote time
-            coyoteTimeCounter = player.IsOnFloor() ? coyoteTimeMax : coyoteTimeCounter - _delta;
+            coyoteTimeCounter = player.IsOnFloor() ? coyoteTimeMax : coyoteTimeCounter - delta;
             player.Velocity = velocity;
             player.MoveAndSlide();
         }

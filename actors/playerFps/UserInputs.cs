@@ -50,7 +50,10 @@ namespace Actors.Players
         {
             if (Input.IsActionJustPressed("mb1"))
             {
-                shootRay.RayShoot();
+                if (shootRay.GetRayCollider() != null)
+                {
+                    GD.Print(shootRay.GetRayCollider());
+                }
             }
         }
 
