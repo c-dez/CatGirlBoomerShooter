@@ -1,10 +1,9 @@
-using System.Security.Cryptography.X509Certificates;
 using Actors.Enemies;
 using Godot;
 
 public partial class RayCast3d : RayCast3D
 {
-    [Export] Stats stats;
+    [Export] Stats playerStats;
 
     public override void _Ready()
     {
@@ -17,16 +16,18 @@ public partial class RayCast3d : RayCast3D
     }
     public void RayShoot()
     {
-        if (GetCollider() != null )
+        if (GetCollider() != null)
         {
             if (GetCollider() is BaseEnemy enemy)
             {
-                BaseEnemy target = enemy;
-                target.Health -= stats.attackDamage;
-                GD.Print($"{target.Health} to  {target.Name}");
+                enemy.Health -= playerStats.attackDamage;
+                GD.Print($"{enemy.Health} to  {enemy.Name}");
 
             }
-            
+            else if (GetCollider() is GrappingNode grappingNode)
+            {
+                GD.Print("true");
+            }
 
         }
     }

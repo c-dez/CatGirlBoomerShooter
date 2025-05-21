@@ -27,6 +27,8 @@ namespace Actors.Players
         float jumpGravity;
         float fallGravity;
 
+        StateMachine stateMachine;
+
 
 
         //squash
@@ -56,6 +58,9 @@ namespace Actors.Players
             //wall jump signals
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
+
+            //statemachine
+            stateMachine = GetParent<Node3D>().GetNode<StateMachine>("StateMachine");
 
         }
 
@@ -104,10 +109,11 @@ namespace Actors.Players
         {
             if (player.IsOnFloor())
             {
-                if (moveDirection.Length() > 0.2f && lastMoveDirection == Vector3.Zero)
+                if (moveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
                 {
-                    // si userInputs.lastMoveDirection es zero, significa que los inputs de el usuario son usados
-                    // si no es zero, significa que los inputs de usuario son ignorados
+                    
+                    // si state == moving, los inputs de movimiento de el usuario son usados
+                    // si state == dashing, significa que los inputs de usuario son ignorados
                     velocity.X = moveDirection.X * speed;
                     velocity.Z = moveDirection.Z * speed;
                     if (player.IsOnFloor())
@@ -115,7 +121,8 @@ namespace Actors.Players
                         // moveStateMachine.Travel("run");
                     }
                 }
-                else if (lastMoveDirection != Vector3.Zero)
+                else if (stateMachine.state == (int)StateMachine.STATES.dashing)
+
                 {
                     // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
                     velocity.X = lastMoveDirection.X * DodgeSpeed;

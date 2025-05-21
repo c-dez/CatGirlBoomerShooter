@@ -16,6 +16,7 @@ namespace Actors.Players
         public Vector3 LastMoveDirection = Vector3.Zero;
         public bool JumpKeyPressed = false;
         bool DodgeKeyPressed = false;
+        StateMachine stateMachine;
 
 
         // debug
@@ -27,6 +28,8 @@ namespace Actors.Players
             DodgeKeyTimerBufferNode = GetNode<Timer>("DodgeKeyBufferTimer");
             IsDogingTimerNode = GetNode<Timer>("IsDogingTimer");
             Player = GetNode<CharacterBody3D>("../..");
+
+            stateMachine = GetParent<Node3D>().GetNode<StateMachine>("StateMachine");
         }
 
 
@@ -60,10 +63,13 @@ namespace Actors.Players
             {
                 IsDogingTimerNode.Start(IsDogingTime);
                 LastMoveDirection = MoveDirection;
+                stateMachine.state = (int)StateMachine.STATES.dashing;
             }
             if (IsDogingTimerNode.TimeLeft == 0)
             {
                 LastMoveDirection = Vector3.Zero;
+                stateMachine.state = (int)StateMachine.STATES.moving;
+
             }
         }
 
