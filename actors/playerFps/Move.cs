@@ -6,20 +6,22 @@ namespace Actors.Players
     {
         [ExportGroup("Nodes")]
         [Export] CharacterBody3D player;
-        // [Export] public Node3D skin;
         [Export] Area3D wallArea;
         [Export] UserInputs userInputs;
+        StateMachine stateMachine;
+        // private AnimationNodeStateMachinePlayback moveStateMachine;
+        // [Export] public Node3D skin;
 
         [ExportGroup("Movement")]
-        // private AnimationNodeStateMachinePlayback moveStateMachine;
         [Export] float speed = 8.0f;
         [Export] float jumpHeight; // 1 me gusta como se sienten estos valores
         [Export] float jumpTimeToPeak; // 0.4
         [Export] float jumpTimeToDecend; // 0.5
         [Export] float wallJumpForce = 4.0f; // 5
         [Export] float DodgeSpeed = 1f; // 1.7
-        private float speedModifier = 1.0f;
+        float speedModifier = 1.0f;
 
+        // campos internos
         float coyoteTimeMax = 0.3f;
         float coyoteTimeCounter = 0f;
         float jumpBufferCounter = 0f;
@@ -27,14 +29,14 @@ namespace Actors.Players
         float jumpGravity;
         float fallGravity;
 
-        StateMachine stateMachine;
-
-
+        // wall jump
+        bool canWallJump = false;
 
         //squash
         float _squashAndStretch = 1.0f;
         float SquashAndStretch
         {
+            //NO IMPLEMENTADO
             get => _squashAndStretch;
             set
             {
@@ -44,8 +46,6 @@ namespace Actors.Players
             }
         }
 
-        // wall jump
-        bool canWallJump = false;
 
 
 
@@ -58,8 +58,7 @@ namespace Actors.Players
             //wall jump signals
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
-
-            //statemachine
+            //referencias a nodos
             stateMachine = GetParent<Node3D>().GetNode<StateMachine>("StateMachine");
 
         }
@@ -93,25 +92,13 @@ namespace Actors.Players
         }
 
 
-        void OnWallAreaEntered(Node3D area)
-        {
-            canWallJump = true;
-        }
-
-
-        void OnWallAreaExited(Node3D area)
-        {
-            canWallJump = false;
-        }
-
-
-        void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 lastMoveDirection)
+        void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 userInputsLastMoveDirection)
         {
             if (player.IsOnFloor())
             {
                 if (moveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
                 {
-                    
+
                     // si state == moving, los inputs de movimiento de el usuario son usados
                     // si state == dashing, significa que los inputs de usuario son ignorados
                     velocity.X = moveDirection.X * speed;
@@ -125,8 +112,8 @@ namespace Actors.Players
 
                 {
                     // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
-                    velocity.X = lastMoveDirection.X * DodgeSpeed;
-                    velocity.Z = lastMoveDirection.Z * DodgeSpeed;
+                    velocity.X = userInputsLastMoveDirection.X * DodgeSpeed;
+                    velocity.Z = userInputsLastMoveDirection.Z * DodgeSpeed;
                 }
                 else
                 {
@@ -136,6 +123,7 @@ namespace Actors.Players
 
                     if (player.IsOnFloor())
                     {
+                        // NO IMPLEMENTADO: aqui va states para animacines
                         // moveStateMachine.Travel("idle");
                     }
                 }
@@ -185,10 +173,24 @@ namespace Actors.Players
 
         void DoSquashAndStretch(float value, float duration = 1.0f)
         {
+            //NO IMPLEMENTADO:  animacion para skin
             Tween tween = CreateTween();
             tween.TweenProperty(this, "SquashAndStretch", value, duration);
             tween.TweenProperty(this, "SquashAndStretch", 1.0f, duration * 1.8f).SetEase(Tween.EaseType.Out);
         }
+
+
+        void OnWallAreaEntered(Node3D area)
+        {
+            canWallJump = true;
+        }
+
+
+        void OnWallAreaExited(Node3D area)
+        {
+            canWallJump = false;
+        }
+
 
 
     }
