@@ -92,12 +92,6 @@ namespace Actors.Players
         }
 
 
-        void GrappigHook()
-        {
-            
-        }
-
-
         void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 userInputsLastMoveDirection)
         {
             if (player.IsOnFloor())

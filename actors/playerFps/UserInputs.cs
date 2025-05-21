@@ -1,3 +1,4 @@
+using Actors.Enemies;
 using Godot;
 namespace Actors.Players
 {
@@ -40,6 +41,8 @@ namespace Actors.Players
             DodgeKeyBuffer();
             DoDodge();
             Shoot();
+
+            // cambia el Lenght de srping arm para simular entre tercera y primera persona
             Camera.spring.SpringLength = Input.IsActionPressed("mb2") ? -1f : 5f;
             crossHair.Visible = Input.IsActionPressed("mb2");
 
@@ -52,7 +55,14 @@ namespace Actors.Players
             {
                 if (shootRay.GetRayCollider() != null)
                 {
-                    GD.Print(shootRay.GetRayCollider());
+                    if (shootRay.GetRayCollider() is BaseEnemy enemy)
+                    {
+                        GD.Print(enemy.Name);
+                    }
+                    else if (shootRay.GetRayCollider() is GrappingNode grappingNode)
+                    {
+                        GD.Print(grappingNode.Name);
+                    }
                 }
             }
         }
