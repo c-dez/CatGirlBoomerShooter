@@ -41,10 +41,9 @@ namespace Actors.Players
             DodgeKeyBuffer();
             DoDodge();
             Shoot();
+            ChangeBetweenFirstAndThridPersonCamera();
 
-            // cambia el Lenght de srping arm para simular entre tercera y primera persona
-            Camera.spring.SpringLength = Input.IsActionPressed("mb2") ? -1f : 5f;
-            crossHair.Visible = Input.IsActionPressed("mb2");
+
 
 
         }
@@ -58,13 +57,26 @@ namespace Actors.Players
                     if (shootRay.GetRayCollider() is BaseEnemy enemy)
                     {
                         GD.Print(enemy.Name);
+                        // se le va a hacer dano a enemigo
                     }
                     else if (shootRay.GetRayCollider() is GrappingNode grappingNode)
                     {
                         GD.Print(grappingNode.Name);
+                        // se va a entrar a grapping state
+                        // se va a bloquear los inputs de usuario de movimiento
+                        //se va a mover player de su pocision actual a la pocision de grappingNode
+                        //al llegar al punto se regresa a move state y se desbloquea los inputs de el usuario
                     }
                 }
             }
+        }
+
+
+        void ChangeBetweenFirstAndThridPersonCamera()
+        {
+            // cambia el Lenght de srping arm para simular entre tercera y primera persona
+            Camera.spring.SpringLength = Input.IsActionPressed("mb2") ? -1f : 5f;
+            crossHair.Visible = Input.IsActionPressed("mb2");
         }
 
 
