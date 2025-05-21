@@ -50,7 +50,7 @@ namespace Actors.Players
 
         void Shoot()
         {
-            if (Input.IsActionJustPressed("mb1"))
+            if (Input.IsActionJustPressed("mb1") && Input.IsActionPressed("mb2"))
             {
                 if (shootRay.GetRayCollider() != null)
                 {
