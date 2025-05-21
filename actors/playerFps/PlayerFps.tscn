@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw2qu222mlyi4"]
+[gd_scene load_steps=13 format=3 uid="uid://bw2qu222mlyi4"]
 
 [ext_resource type="Script" uid="uid://pk4y6ed4tlka" path="res://actors/playerFps/UserInputs.cs" id="1_5s81b"]
 [ext_resource type="PackedScene" uid="uid://buswndoyp4rd6" path="res://actors/playerFps/CrossHair.tscn" id="1_32gnp"]
@@ -10,6 +10,12 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6uhly"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_olk1m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j7sdg"]
+albedo_color = Color(1, 0.14902, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_olk1m"]
+material = SubResource("StandardMaterial3D_j7sdg")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ax26v"]
 height = 1.0
@@ -32,6 +38,10 @@ shape = SubResource("CapsuleShape3D_6uhly")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_olk1m")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.6, 0, 0, 0, 0.3, 0, 0, 0, 0.4, 0, 0.5, -0.6)
+mesh = SubResource("BoxMesh_olk1m")
+
 [node name="Components" type="Node3D" parent="."]
 
 [node name="Move" type="Node" parent="Components" node_paths=PackedStringArray("player", "wallArea", "userInputs")]
@@ -45,12 +55,13 @@ jumpTimeToDecend = 0.5
 wallJumpForce = 5.0
 DodgeSpeed = 15.0
 
-[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera", "crossHair")]
+[node name="UserInputs" type="Node" parent="Components" node_paths=PackedStringArray("Camera", "crossHair", "shootRay")]
 script = ExtResource("1_5s81b")
 Camera = NodePath("../ThirdPersonCamera")
 IsDogingTime = 0.2
 DodgeKeyBufferTime = 0.2
 crossHair = NodePath("../CrossHair")
+shootRay = NodePath("../ThirdPersonCamera/SpringArm3D/Camera3D/RayCast3D")
 
 [node name="JumpKeyBufferTimer" type="Timer" parent="Components/UserInputs"]
 wait_time = 0.25
@@ -79,10 +90,11 @@ shape = SubResource("CylinderShape3D_ax26v")
 
 [node name="CrossHair" parent="Components" instance=ExtResource("1_32gnp")]
 
-[node name="ThirdPersonCamera" type="Node3D" parent="Components" node_paths=PackedStringArray("userInputs")]
+[node name="ThirdPersonCamera" type="Node3D" parent="Components" node_paths=PackedStringArray("userInputs", "skin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 script = ExtResource("5_j7sdg")
 userInputs = NodePath("../UserInputs")
+skin = NodePath("../../MeshInstance3D")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Components/ThirdPersonCamera"]
 shape = SubResource("SphereShape3D_3hfph")

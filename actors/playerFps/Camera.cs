@@ -10,6 +10,8 @@ namespace Actors.Players
         private Vector2 cameraInputDirection = Vector2.Zero;
         public SpringArm3D spring;
 
+        [Export] MeshInstance3D skin;
+
 
         public override void _Ready()
         {
@@ -28,7 +30,7 @@ namespace Actors.Players
         public override void _PhysicsProcess(double delta)
         {
             CameraRotation((float)delta);
-            SkinRotation();
+            SkinRotation((float)delta);
         }
 
 
@@ -42,15 +44,18 @@ namespace Actors.Players
             cameraInputDirection = Vector2.Zero;
         }
 
-        private void SkinRotation()
+        private void SkinRotation(float delta)
         {
-            Vector3 moveDirection = userInputs.MoveDirection;
+            Vector3 moveDirection =userInputs.MoveDirection;
             if (moveDirection.Length() < 0.2f)
             {
+                skin.RotateY(cameraInputDirection.X * delta);
             }
             else
             {
                 moveDirection.Y = 0;
+                Vector3 targetPos = skin.GlobalTransform.Origin + moveDirection;
+                skin.LookAt(targetPos, Vector3.Up);
             }
         }
 

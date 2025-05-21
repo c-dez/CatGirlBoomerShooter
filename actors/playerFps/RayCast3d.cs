@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Actors.Enemies;
 using Godot;
 
@@ -11,10 +12,14 @@ public partial class RayCast3d : RayCast3D
     }
     public override void _PhysicsProcess(double delta)
     {
-        
-        if (GetCollider() != null)
+
+
+    }
+    public void RayShoot()
+    {
+        if (GetCollider() != null )
         {
-            if (GetCollider() is BaseEnemy enemy && Input.IsActionJustPressed("mb1"))
+            if (GetCollider() is BaseEnemy enemy)
             {
                 BaseEnemy target = enemy;
                 target.Health -= stats.attackDamage;

@@ -7,6 +7,7 @@ namespace Actors.Players
         [Export] float IsDogingTime = 0.25f;
         [Export] float DodgeKeyBufferTime = 0.3f;
         [Export] CanvasLayer crossHair;
+        [Export] RayCast3d shootRay;
         CharacterBody3D Player;
         Timer JumpKeyBufferTimerNode;
         Timer DodgeKeyTimerBufferNode;
@@ -18,7 +19,6 @@ namespace Actors.Players
 
 
         // debug
-        int frames = 0;
 
 
         public override void _Ready()
@@ -36,10 +36,19 @@ namespace Actors.Players
             JumpKeyBuffer();
             DodgeKeyBuffer();
             DoDodge();
-            Camera.spring.SpringLength = Input.IsActionPressed("mb2")? -1f: 5f;
+            Shoot();
+            Camera.spring.SpringLength = Input.IsActionPressed("mb2") ? -1f : 5f;
             crossHair.Visible = Input.IsActionPressed("mb2");
 
-           
+
+        }
+
+        void Shoot()
+        {
+            if (Input.IsActionJustPressed("mb1"))
+            {
+                shootRay.RayShoot();
+            }
         }
 
 
@@ -83,7 +92,7 @@ namespace Actors.Players
         void DodgeKeyBuffer()
         {
             // ATENCION DodgeKeyBufferTime tiene que ser menor que IsDogingTime si no causa errores de logica y se dispara 2 veces dodge al seguir introduciendo input de movimiento
-            if (Input.IsActionJustPressed("shift") )
+            if (Input.IsActionJustPressed("shift"))
             {
                 DodgeKeyTimerBufferNode.Start(DodgeKeyBufferTime);
             }
