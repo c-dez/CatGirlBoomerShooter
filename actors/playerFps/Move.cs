@@ -128,7 +128,7 @@ namespace Actors.Players
                     }
                 }
             }
-            else
+            else if (!player.IsOnFloor() && stateMachine.state == (int)StateMachine.STATES.moving)
             {
                 {
                     velocity.X = moveDirection.X * speed;
