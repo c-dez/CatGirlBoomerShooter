@@ -1,3 +1,4 @@
+using Actor.Players;
 using Godot;
 namespace Actors.Players
 {
@@ -5,7 +6,7 @@ namespace Actors.Players
     public partial class Move : Node
     {
         [ExportGroup("Nodes")]
-        [Export] CharacterBody3D player;
+        Player player;
         [Export] Area3D wallArea;
         [Export] UserInputs userInputs;
         StateMachine stateMachine;
@@ -59,6 +60,7 @@ namespace Actors.Players
             wallArea.AreaEntered += OnWallAreaEntered;
             wallArea.AreaExited += OnWallAreaExited;
             //referencias a nodos
+            player = (Player)GetTree().GetFirstNodeInGroup("Player");
             stateMachine = GetParent<Node3D>().GetNode<StateMachine>("StateMachine");
 
         }

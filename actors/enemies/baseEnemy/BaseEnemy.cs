@@ -1,3 +1,4 @@
+using Actor.Players;
 using Godot;
 
 namespace Actors.Enemies
@@ -5,7 +6,7 @@ namespace Actors.Enemies
     public partial class BaseEnemy : CharacterBody3D
     {
 
-        public CharacterBody3D player;
+        public Player player;
 
         [ExportGroup("Base Stats")]
         [Export] public int Health = 100;
@@ -28,7 +29,7 @@ namespace Actors.Enemies
 
         public override void _Ready()
         {
-            player = (CharacterBody3D)GetTree().GetFirstNodeInGroup("Player");
+            player = (Player)GetTree().GetFirstNodeInGroup("Player");
             skin = GetNode<Node3D>("Components/Skin");
             areaDetectPatrolPoints = GetNode<Area3D>("Components/AreaDetectPatrolPoints");
 

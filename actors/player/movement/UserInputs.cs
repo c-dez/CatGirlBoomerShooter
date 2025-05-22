@@ -1,3 +1,4 @@
+using Actor.Players;
 using Actors.Enemies;
 using Godot;
 namespace Actors.Players
@@ -9,7 +10,9 @@ namespace Actors.Players
         [Export] float DodgeKeyBufferTime = 0.3f;
         [Export] CanvasLayer crossHair;
         [Export] RayCast3d shootRay;
-        CharacterBody3D Player;
+        // Player player;
+        Player player;
+
         Timer JumpKeyBufferTimerNode;
         Timer DodgeKeyTimerBufferNode;
         Timer IsDogingTimerNode;
@@ -28,7 +31,8 @@ namespace Actors.Players
             JumpKeyBufferTimerNode = GetNode<Timer>("JumpKeyBufferTimer");
             DodgeKeyTimerBufferNode = GetNode<Timer>("DodgeKeyBufferTimer");
             IsDogingTimerNode = GetNode<Timer>("IsDogingTimer");
-            Player = GetNode<CharacterBody3D>("../..");
+            player = (Player)GetTree().GetFirstNodeInGroup("Player");
+
 
             stateMachine = GetParent<Node3D>().GetNode<StateMachine>("StateMachine");
         }
@@ -84,7 +88,7 @@ namespace Actors.Players
         // Deberia de estar en este script de UserInputs?
         {
             // hace dodge cuando esta en el suelo bloqueando la  direccion de el usuario con la ultima direccion antes de dodge, hasta que dodge termina
-            if (DodgeKeyPressed && LastMoveDirection == Vector3.Zero && Player.IsOnFloor())
+            if (DodgeKeyPressed && LastMoveDirection == Vector3.Zero && player.IsOnFloor())
             {
                 IsDogingTimerNode.Start(IsDogingTime);
                 LastMoveDirection = MoveDirection;
