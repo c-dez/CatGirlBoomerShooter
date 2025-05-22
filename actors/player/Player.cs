@@ -4,7 +4,6 @@ namespace Actor.Players
 {
     public partial class Player : CharacterBody3D
     {
-        // move se encarga de movimiento, las variables relacionadas estan dentro de el nodo
         Move move;
         UserInputs userInputs;
 

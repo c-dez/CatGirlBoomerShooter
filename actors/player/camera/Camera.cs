@@ -46,7 +46,7 @@ namespace Actors.Players
 
         private void SkinRotation(float delta)
         {
-            Vector3 moveDirection =userInputs.MoveDirection;
+            Vector3 moveDirection =userInputs.moveDirection;
             if (moveDirection.Length() < 0.2f)
             {
                 skin.RotateY(cameraInputDirection.X * delta);

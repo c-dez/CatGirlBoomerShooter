@@ -19,7 +19,7 @@ namespace Actors.Players
         [Export] float jumpTimeToPeak; // 0.4
         [Export] float jumpTimeToDecend; // 0.5
         [Export] float wallJumpForce = 4.0f; // 5
-        [Export] float DodgeSpeed = 1f; // 1.7
+        [Export] float dodgeSpeed = 1f; // 1.7
         float speedModifier = 1.0f;
 
         // campos internos
@@ -98,13 +98,13 @@ namespace Actors.Players
             Vector3 velocity = player.Velocity;
             if (player.IsOnFloor())
             {
-                if (userInputs.MoveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
+                if (userInputs.moveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
                 {
 
                     // si state == moving, los inputs de movimiento de el usuario son usados
                     // si state == dashing, significa que los inputs de usuario son ignorados
-                    velocity.X = userInputs.MoveDirection.X * speed;
-                    velocity.Z = userInputs.MoveDirection.Z * speed;
+                    velocity.X = userInputs.moveDirection.X * speed;
+                    velocity.Z = userInputs.moveDirection.Z * speed;
                     if (player.IsOnFloor())
                     {
                         // moveStateMachine.Travel("run");
@@ -114,8 +114,8 @@ namespace Actors.Players
 
                 {
                     // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
-                    velocity.X = userInputs.LastMoveDirection.X * DodgeSpeed;
-                    velocity.Z = userInputs.LastMoveDirection.Z * DodgeSpeed;
+                    velocity.X = userInputs.lastMoveDirection.X * dodgeSpeed;
+                    velocity.Z = userInputs.lastMoveDirection.Z * dodgeSpeed;
                 }
                 else
                 {
@@ -133,8 +133,8 @@ namespace Actors.Players
             else if (!player.IsOnFloor() && stateMachine.state == (int)StateMachine.STATES.moving)
             {
                 {
-                    velocity.X = userInputs.MoveDirection.X * speed;
-                    velocity.Z = userInputs.MoveDirection.Z * speed;
+                    velocity.X = userInputs.moveDirection.X * speed;
+                    velocity.Z = userInputs.moveDirection.Z * speed;
                 }
             }
             player.Velocity = velocity;
