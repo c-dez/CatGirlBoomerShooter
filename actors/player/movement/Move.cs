@@ -14,7 +14,7 @@ namespace Actors.Players
         // [Export] public Node3D skin;
 
         [ExportGroup("Movement")]
-        [Export] float speed = 8.0f;
+        [Export] float speed = 5.0f;
         [Export] float jumpHeight; // 1 me gusta como se sienten estos valores
         [Export] float jumpTimeToPeak; // 0.4
         [Export] float jumpTimeToDecend; // 0.5
@@ -68,14 +68,13 @@ namespace Actors.Players
 
         public override void _PhysicsProcess(double delta)
         {
-            Vector3 velocity = player.Velocity;
-            MoveOnFloor(userInputs.MoveDirection, velocity, userInputs.LastMoveDirection);
-            Jump(velocity, (float)delta);
-            WallJump();
+            // MoveOnFloor();
+            // Jump((float)delta);
+            // WallJump();
         }
 
 
-        void WallJump()
+        public void WallJump()
         {
             Vector3 velocity = player.Velocity;
             if (canWallJump)
@@ -94,17 +93,18 @@ namespace Actors.Players
         }
 
 
-        void MoveOnFloor(Vector3 moveDirection, Vector3 velocity, Vector3 userInputsLastMoveDirection)
+        public void MoveOnFloor()
         {
+            Vector3 velocity = player.Velocity;
             if (player.IsOnFloor())
             {
-                if (moveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
+                if (userInputs.MoveDirection.Length() > 0.2f && stateMachine.state == (int)StateMachine.STATES.moving)
                 {
 
                     // si state == moving, los inputs de movimiento de el usuario son usados
                     // si state == dashing, significa que los inputs de usuario son ignorados
-                    velocity.X = moveDirection.X * speed;
-                    velocity.Z = moveDirection.Z * speed;
+                    velocity.X = userInputs.MoveDirection.X * speed;
+                    velocity.Z = userInputs.MoveDirection.Z * speed;
                     if (player.IsOnFloor())
                     {
                         // moveStateMachine.Travel("run");
@@ -114,8 +114,8 @@ namespace Actors.Players
 
                 {
                     // Movimiento cuando dodge capturo lastMoveDirection antes de Dodge en UserInputs
-                    velocity.X = userInputsLastMoveDirection.X * DodgeSpeed;
-                    velocity.Z = userInputsLastMoveDirection.Z * DodgeSpeed;
+                    velocity.X = userInputs.LastMoveDirection.X * DodgeSpeed;
+                    velocity.Z = userInputs.LastMoveDirection.Z * DodgeSpeed;
                 }
                 else
                 {
@@ -133,8 +133,8 @@ namespace Actors.Players
             else if (!player.IsOnFloor() && stateMachine.state == (int)StateMachine.STATES.moving)
             {
                 {
-                    velocity.X = moveDirection.X * speed;
-                    velocity.Z = moveDirection.Z * speed;
+                    velocity.X = userInputs.MoveDirection.X * speed;
+                    velocity.Z = userInputs.MoveDirection.Z * speed;
                 }
             }
             player.Velocity = velocity;
@@ -145,8 +145,10 @@ namespace Actors.Players
         }
 
 
-        void Jump(Vector3 velocity, float delta)
+        public void Jump(float delta)
         {
+            Vector3 velocity = player.Velocity;
+
             if (userInputs.JumpKeyPressed && (coyoteTimeCounter > 0.01f))
             {
                 velocity.Y = jumpVelocity;
