@@ -29,12 +29,12 @@ namespace Actors.Players
 
         public override void _PhysicsProcess(double delta)
         {
-            CameraRotation((float)delta);
-            SkinRotation((float)delta);
+            // CameraRotation((float)delta);
+            // SkinRotation((float)delta);
         }
 
 
-        private void CameraRotation(float delta)
+        public void CameraRotation(float delta)
         {
             Vector3 rot = Rotation;
             rot.X -= cameraInputDirection.Y * delta;
@@ -44,7 +44,7 @@ namespace Actors.Players
             cameraInputDirection = Vector2.Zero;
         }
 
-        private void SkinRotation(float delta)
+        public void SkinRotation(float delta)
         {
             Vector3 moveDirection =userInputs.moveDirection;
             if (moveDirection.Length() < 0.2f)
