@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://dtewbija3dquh"]
 
-[ext_resource type="PackedScene" uid="uid://bw2qu222mlyi4" path="res://actors/playerFps/PlayerFps.tscn" id="1_mso0s"]
+[ext_resource type="PackedScene" uid="uid://bw2qu222mlyi4" path="res://actors/player/Player.tscn" id="1_mso0s"]
 [ext_resource type="PackedScene" uid="uid://di3i83c1pj8jm" path="res://actors/enemies/baseEnemy/base_enemy.tscn" id="2_q7m5b"]
 [ext_resource type="PackedScene" uid="uid://dv0mulynf4pkn" path="res://nivels/level1_test.tscn" id="3_5je5d"]
-[ext_resource type="PackedScene" uid="uid://dne1st830nqch" path="res://prefabs/grapping_node.tscn" id="4_q7m5b"]
+[ext_resource type="PackedScene" uid="uid://dne1st830nqch" path="res://mechanics_tools/grapping_node.tscn" id="4_q7m5b"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mso0s"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)

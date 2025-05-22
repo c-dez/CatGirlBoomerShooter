@@ -29,7 +29,8 @@ project/assembly_name="CatGirlBoomerShooter"
 [file_customization]
 
 folder_colors={
-"res://actors/playerFps/": "red"
+"res://actors/": "red",
+"res://mechanics_tools/": "orange"
 }
 
 [input]
