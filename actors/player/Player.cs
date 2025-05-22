@@ -1,17 +1,18 @@
 using Actors.Players;
 using Godot;
-using System;
 namespace Actor.Players
 {
     public partial class Player : CharacterBody3D
     {
         // move se encarga de movimiento, las variables relacionadas estan dentro de el nodo
         Move move;
+        UserInputs userInputs;
 
 
         public override void _Ready()
         {
             move = GetNode<Move>("Components/Move");
+            userInputs = GetNode<UserInputs>("Components/UserInputs");
         }
 
         public override void _PhysicsProcess(double delta)
@@ -19,6 +20,13 @@ namespace Actor.Players
             move.MoveOnFloor();
             move.Jump((float)delta);
             move.WallJump();// falta muros que detectar
+        }
+
+        public override void _Process(double delta)
+        {
+            userInputs.Dodge();
+            userInputs.Shoot();
+            userInputs.ChangeBetweenFirstAndThridPersonCamera();
         }
     }
 

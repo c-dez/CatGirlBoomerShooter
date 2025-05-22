@@ -5,9 +5,12 @@ namespace Actors.Players
 {
     public partial class UserInputs : Node
     {
+        public Vector3 MoveDirection = Vector3.Zero;
+        public Vector3 LastMoveDirection = Vector3.Zero;
+        public bool JumpKeyPressed = false;
         [Export] Camera Camera;
         [Export] float IsDogingTime = 0.25f;
-        [Export] float DodgeKeyBufferTime = 0.3f;
+        [Export] float DodgeKeyBufferTime = 0.2f;
         [Export] CanvasLayer crossHair;
         [Export] RayCast3d shootRay;
         // Player player;
@@ -16,14 +19,8 @@ namespace Actors.Players
         Timer JumpKeyBufferTimerNode;
         Timer DodgeKeyTimerBufferNode;
         Timer IsDogingTimerNode;
-        public Vector3 MoveDirection = Vector3.Zero;
-        public Vector3 LastMoveDirection = Vector3.Zero;
-        public bool JumpKeyPressed = false;
         bool DodgeKeyPressed = false;
         StateMachine stateMachine;
-
-
-        // debug
 
 
         public override void _Ready()
@@ -43,16 +40,16 @@ namespace Actors.Players
             GetMoveDirection();
             JumpKeyBuffer();
             DodgeKeyBuffer();
-            DoDodge();
-            Shoot();
-            ChangeBetweenFirstAndThridPersonCamera();
+            // Dodge();
+            // Shoot();
+            // ChangeBetweenFirstAndThridPersonCamera();
 
 
 
 
         }
 
-        void Shoot()
+        public void Shoot()
         {
             if (Input.IsActionJustPressed("mb1") && Input.IsActionPressed("mb2"))
             {
@@ -76,7 +73,7 @@ namespace Actors.Players
         }
 
 
-        void ChangeBetweenFirstAndThridPersonCamera()
+        public void ChangeBetweenFirstAndThridPersonCamera()
         {
             // cambia el Lenght de srping arm para simular entre tercera y primera persona
             Camera.spring.SpringLength = Input.IsActionPressed("mb2") ? -1f : 5f;
@@ -84,7 +81,7 @@ namespace Actors.Players
         }
 
 
-        void DoDodge()
+        public void Dodge()
         // Deberia de estar en este script de UserInputs?
         {
             // hace dodge cuando esta en el suelo bloqueando la  direccion de el usuario con la ultima direccion antes de dodge, hasta que dodge termina
